@@ -1,0 +1,21 @@
+\section{Adaptation}
+\label{sec:Adapt}
+
+\subsection{Surface Label Prediction using MFCN}
+\label{subsection:MFCN}
+The addaptation of MFCN mainly focused on the following aspects.
+
+\textbf{Network Architecture}
+To start with, we use the VGG16 based FCN with seven-channel input(rgb:3,depth:1,normals:3) and one branch output for semantic surface learning. Later, inspired by \cite{ren2016coarse,mallya2015learning} which declare that joint training can help to reinforce the quality of both surface and edge maps, we add a branch in our FCN to learn edge. The two branch share the features in convolution layers. However, by adding this new branch, we haven't yet raised the results to our expectations. This may be because we have got enough geometric information from depth and normal maps so that joint training do little to help in our case. Furthermore, joint training is also time consuming, about twice as long as training alone.
+
+Considering the emerging network architecture ResNet, we change the basic network from VGG16 to ResNet101. We use the deeplab-v2 based on ResNet101, remove the multi-scale related layers and add input channels for depth and normals. The modified network is initialized by the model pretrained on MS-COCO or PASCAL VOC2012.  
+
+
+\textbf{Dataset}
+We use the relabeled LSUN dataset released by \cite{ren2016coarse} for training. From the beginning, we divide 4000 training images into 3900 training images and 100 validation images then data augmentation is applied on training set, the original 394 validation images are used as test images. This division method is similar to \cite{ren2016coarse}. We don't use the original 1000 test images because there are no ground truth.
+
+Later, we find LSUN official evaluation toolkits, and the contrast experiments also need to be done on the original test set. So we follow the official division method to use dataset. Then 4000 training images are augmented to ten times using standard transformations such as mild rotation and cropping.   
+
+
+
+	
