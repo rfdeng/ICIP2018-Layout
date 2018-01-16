@@ -21,15 +21,15 @@ Our performance on LSUN test set compared with other methods is shown in Table~\
 		Zhang et al. (2017)~\cite{zhang2017learning} & 8.70 & 12.49 \\
 		Dasgupta et al. (2016)~\cite{dasgupta2016delay} & 8.20 & 10.63 \\
 		Ren et al. (2016)~\cite{ren2016three} & 7.95 & 9.31 \\
-		Proposed FCN-GF & xxx & 9.51 \\
+		Zhao et al. (2017)~\cite{zhao2017physics} & 3.84 & 5.29 \\
+		Proposed FCN-GF & xxx & xxx \\
 		\hline
 	\end{tabular}
 \end{table}
 
 \subsection{Hedau Results}
 \label{sec:Hedau}
-We also conduct experiment on a relatively smaller dataset published by Hedau \emph{et al}. \cite{hedau2009recovering}, which consists of 209 training images and 104 testing images. We directly predict the semantic surface on Hedau's test set using the model trained on LSUN. Pixel error is adopted to evaluate the results, see Table~\ref{table:comparison-hedau}. ...
-
+We also conduct experiment on a relatively smaller dataset published by Hedau \emph{et al}. \cite{hedau2009recovering}, which consists of 209 training images and 104 testing images. We directly predict the semantic surface on Hedau's test set using the model trained on LSUN. Pixel error is adopted to evaluate the results, see Table~\ref{table:comparison-hedau}. Our performance is better than \cite{ren2016three} which has trained their model on Hedau's training set. This indicates that our model has a good generalization ability.
 
 \begin{table}
 	\centering 
@@ -45,7 +45,7 @@ We also conduct experiment on a relatively smaller dataset published by Hedau \e
 		Dasgupta et al. (2016)~\cite{dasgupta2016delay} & 9.73 \\
 		Ren et al. (2016)~\cite{ren2016three} & 8.67 \\
 		Zhao et al. (2017)~\cite{zhao2017physics} & 6.60 \\
-		Proposed MC-FCN & xxx \\
+		Proposed MC-FCN & 8.49 \\
 		\hline
 	\end{tabular}
 \end{table}
