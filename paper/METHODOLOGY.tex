@@ -16,9 +16,9 @@ Under the Manhattan world assumption, a room layout can be represented as a cube
 %
 Given an RGB image $\vb{I}$ with arbitrary size, our algorithm generates a room layout $\vb{L}$ that has a surface label for each pixel $L_{ij} $ in such 5-class set. Fig. \ref{fig:pipeline} shows our algorithm pipeline. 
 %%step 1
-Different from \cite{dasgupta2016delay,ren2016coarse}, we first estimate depth map $D_{I}$ and normal map $N_{I}$ from the input image to generate geometric hints using a multi-scale convolutional architecture~\cite{eigen2015predicting}, as described in Sec.~\ref{sec:depth_normal}.
+in contrast to \cite{dasgupta2016delay,ren2016coarse}, we first estimate depth map $D_{I}$ and normal map $N_{I}$ from the input image to generate geometric hints using a multi-scale convolutional architecture~\cite{eigen2015predicting}, as described in Sec.~\ref{sec:depth_normal}.
 %step 2
-After that, to integrate information from the original RGB image together with the geometric hints, a multi-channel fully convolutional network(MC-FCN) is trained. The MC-FCN is applied to predict five probability maps, each of which describes the belief for a specific layout surface, see details in Sec.~\ref{sec:surfacelabel}.
+After that, to integrate information from the original RGB image together with the geometric hints, a multi-channel fully convolutional network (MC-FCN) is trained. The MC-FCN is applied to predict five probability maps, each of which describes the belief for a specific layout surface, see details in Sec.~\ref{sec:surfacelabel}.
 %step 3: optimization
 While we can easily get access to a layout estimation $\vb{\hat{L}}$ by just choosing the label with the highest score across five probability maps for each pixel. 
 The estimated $\vb{\hat{L}}$ always have wavy boundaries and multiple disjoint connected domains due to the characteristics of neural network, see Fig.~\ref{fig:qualitative}. To handle these problems and obtain more clear layout estimation with geometric constraints, an optimization step is adopted in Sec.~\ref{sec:optimization}.  
@@ -32,7 +32,7 @@ We use the multi-scale convolutional network proposed in \cite{eigen2015predicti
 
 \begin{figure}
 	\centering
-	\includegraphics[width=8.5cm]{figure/extractDN.png}
+	\includegraphics[width=8.5cm]{figure/DN.png}
 	\caption{Depth and normals estimated from RGB images using the multi-scale FCN in \cite{eigen2015predicting} without finetune. From the global perspective, these geometric information can capture the overall spatial relationships between semantic surfaces. }
 	\label{fig:depthandnormal}
 \end{figure}
@@ -53,7 +53,7 @@ In some previous works, FCNs are used for semantic surface segmentation \cite{da
 %
 However, due to clutter, occlusion, complex textures and illumination variations in indoor scenes, the surface segmentation represented as $\vb{\hat{L}}$ are sometimes ruined by irregular spurious regions. Fig.~\ref{fig:fcn-comparison} demonstrates several typical bad cases.
 %
-To get rid of these annoying spurious regions, we attempt to make our network more robust to miscellaneous environmental factors. And for this purpose, a multi-channel FCN(MF-FCN) is adopted to incorporate geometric hints generated from the original image. 
+To get rid of these annoying spurious regions, we attempt to make our network more robust to miscellaneous environmental factors. And for this purpose, a multi-channel FCN (MF-FCN) is adopted to incorporate geometric hints generated from the original image. 
 %
 
 \comments{
@@ -74,7 +74,7 @@ Moreover, an entire plane may be predicted separately into pieces due to clutter
 We build the MC-FCN on a famous architecture ResNet-101 \cite{he2016deep} modified by \cite{chen2016deeplab}. As illustrated in Fig.~\ref{fig:fcn-multi-channel}, the estimated depth and normal maps are treated as additional channels associated with the input RGB images. The DeepLab-ResNet101 in \cite{chen2016deeplab} is designed to be multi-scale for semantic segmentation. While we consider the room layout as a high-level semantic information which is more dependent on global information, we further modify the network by clipping the multi-scale related layers. 
 
 \textbf{Training}
-We simply concatenate different types of data to a seven-channels input(3 channels from RGB, 1 channel from depth and 3 channels from normals) which is then fed into our network. The model we used for initialization from \cite{chen2016deeplab} is pretrained on MS-COCO dataset. We randomly initialize the weights for the first convolution layer to adapt to our input format. The original classifier layer is replaced with a randomly initialized 5-way classifier layer. Then we specifically finetune our MC-FCN for semantic surface segmentation. We have also tried multi-task learning by adding a new branch for learning boundaries among surfaces as \cite{ren2016coarse, mallya2015learning} do. But the joint training does not help to improve the performance of both tasks in our case. This may indicate that our geometric hints have already integrated the additional information which should be learned through joint training.
+We simply concatenate different types of data to a seven-channels input (3 channels from RGB, 1 channel from depth and 3 channels from normals) which is then fed into our network. The model we used for initialization from \cite{chen2016deeplab} is pretrained on MS-COCO dataset. We randomly initialize the weights for the first convolution layer to adapt to our input format. The original classifier layer is replaced with a randomly initialized 5-way classifier layer. Then we specifically finetune our MC-FCN for semantic surface segmentation. We have also tried multi-task learning by adding a new branch for learning boundaries among surfaces as \cite{ren2016coarse, mallya2015learning} do. But the joint training does not help to improve the performance of both tasks in our case. This may indicate that our geometric hints have already integrated the additional information which should be learned through joint training.
 
 The output of our MC-FCN is a $w\times h \times 5$ probability array $\vb{T}$, where $w$ and $h$ stand for the width and length of the input image. Each of the 5 slices can be viewd as a probability map for the corresponding surface label, see Fig.~\ref{fig:fcn-multi-channel}. We utilize the probability array $\vb{T}$ as the basis for our scoring function in both proposals ranking and optimization step. 
 
