@@ -3,20 +3,8 @@
 
 The main purpose of room layout estimation is to extract semantic boundaries among walls, ceiling and floor from a single image. It can be realized by obtaining corresponding semantic planes, as shown in Fig. \ref{fig:pipeline}. The task is challenging because of complex environmental factors such as illumination variations, viewpoints shift, objects diversity and clutter. Furthermore, distinctive clues like room corners and layout boundaries are often occluded by objects. 
 
-
-\comments{
-\begin{figure}[!ht]
-	\centering
-	\textsc{\includegraphics[width=8.5cm]{figure/def.png}}
-	\caption{Illustration of the layout estimation problem. (a) Input image. (b) Layout estimation with semantic boundaries. (c) Layout estimation visulized with semantic planes.}
-	\label{fig:definition}
-\end{figure}
-}
-\comments{Room layout estimation is a fundamental problem for indoor scene understanding and plays a critical role in a diverse range of applications. For example, scene reconstruction, robot navigation and virtual reality. However, it is challenging that the distinctive clues such as room corners and layout boundaries are often occluded by objects. In addition to the occlusion problem, environmental factors like illumination variations, viewpoints shift, objects diversity and clutter can make the situation worse.}
-
-
 %%
-In recent years, massive researches have been carried out on room layout estimation. Conventional methods usually follow a proposing-ranking framework \cite{hedau2009recovering,wang2013discriminative,gupta2010estimating,hedau2010thinking}. Typically, they first generate numbers of proposals by vanishing point detection and ray sampling. Then a ranking step using hand-crafted features is adopted to select the best hypothesis. Recent methods built on fully convulutional networks (FCNs) or encoder-decoder networks achieve impressive performance \cite{mallya2015learning,ren2016coarse,zhang2016learning,dasgupta2016delay,LeeRoomNet17,zhao2017physics}. Specifically, 
+In recent years, massive researches have been carried out on room layout estimation. Conventional methods usually follow a proposing-ranking framework \cite{hedau2009recovering,wang2013discriminative,gupta2010estimating,hedau2010thinking}. Typically, they first generate numbers of proposals by vanishing point detection and ray sampling. Then a ranking step using hand-crafted features is adopted to select the best hypothesis. Recent methods built on FCNs \cite{long2015fully} or encoder-decoder networks achieve impressive performance \cite{mallya2015learning,ren2016coarse,zhang2016learning,dasgupta2016delay,LeeRoomNet17,zhao2017physics}. Specifically, 
 %
 Mallya \emph{et al}. \cite{mallya2015learning} presented an FCN for learning informative edge maps from images, which were then integrated into the conventional framework as additional features. 
 %
@@ -30,8 +18,6 @@ End-to-End approach for room layout estimation had been explored by Lee \emph{et
 %
 Zhao \emph{et al}. \cite{zhao2017physics} introduced a semantic transfer FCN to extract reliable edge features. They fisrt trained an FCN for 37-class semantic segmentation and then bridge the gap to 4-class edge labels by adding a fully connected layer. A physics inspired inference scheme was designed for opimization.
 
-
-\comments{Typically, the FCNs are trained to segment semantic surfaces or to predict boundaries among them. Followed by a postprocessing scheme, the output from FCNs are refined to be consistent with Fig.~\ref{fig:definition}(b)(c). }
 
 Different from previous FCN based methods, we propose to improve the performance of room layout estimation from another perspective. We consider that global geometric information is as important as texture information in room layout estimation. To implicitly employ the geometric hints, depth and normals are estimated from the original image and fused into an MC-FCN. We use the same formulation of layout in \cite{dasgupta2016delay} and combine their optimization step with a proposing-ranking framework to attain precise layout. Experimental results demonstrate that our method is robust and effective for layout estimation even facing clutter and occlusion.
 

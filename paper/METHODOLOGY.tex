@@ -12,7 +12,7 @@
 	\label{fig:pipeline}
 \end{figure}
 
-Under the Manhattan world assumption, a room layout can be represented as a cube having at most five surfaces \{Left, Front, Right, Ceiling, Ground\} visible in an image. 
+Under the Manhattan world assumption \cite{coughlan1999manhattan}, a room layout can be represented as a cube having at most five surfaces \{Left, Front, Right, Ceiling, Ground\} visible in an image. 
 %
 Given an RGB image $\vb{I}$ with arbitrary size, our algorithm generates a room layout $\vb{L}$ that has a surface label for each pixel $L_{ij} $ in such 5-class set. Fig. \ref{fig:pipeline} shows our algorithm pipeline. 
 %%step 1
@@ -56,11 +56,6 @@ However, due to clutter, occlusion, complex textures and illumination variations
 To get rid of these annoying spurious regions, we attempt to make our network more robust to miscellaneous environmental factors. And for this purpose, a multi-channel FCN (MF-FCN) is adopted to incorporate geometric hints generated from the original image. 
 %
 
-\comments{
-The comparison between the predicted results and the ground truth reveals that due to the complex environmental factors of indoor scenes, layout results estimated from FCNN are not very reliable sometimes. 
-When the occlusion happens to be at the boundaries of semantic planes, such critical clues are partially or entirely excluded, and thus we can not tell location of each plane precisely. 
-Moreover, an entire plane may be predicted separately into pieces due to clutter lay in the plane.}
-
 
 \begin{figure}
 	\centering
@@ -80,7 +75,6 @@ We simply concatenate different types of data to a seven-channels input (3 chann
 
 The output of our MC-FCN is a $w\times h \times 5$ probability array $\vb{T}$, where $w$ and $h$ stand for the width and length of the input image. Each of the 5 slices can be viewd as a probability map for the corresponding surface label, see Fig.~\ref{fig:fcn-multi-channel}. We utilize the probability array $\vb{T}$ as the basis for our scoring function in both proposals ranking and optimization step. 
 
-\comments{Then an optimization step based on this score function is applied to obtain precise layout estimation.}
 \comments{Some visualized results compared with FCN without geometric hints as additional input are shown in Fig.~\ref{fig:fcn-comparison}.}
 
 \subsection{Layout Optimization}
@@ -96,7 +90,7 @@ Indoor scene layout is modeled as the projection of a cuboid which can be define
 \begin{figure}
 	\centering
 	\includegraphics[width=8.5cm]{figure/parameterization.png}
-	\caption{(a) Ambiguity between front wall and right/left wall. (b) Illustration of the parameterized model $\tau$. }
+	\caption{(a) Ambiguity between front wall and right/left wall.\drf{should be deleted or replaced} (b) Illustration of the parameterized model $\tau$. }
 	\label{fig:parameterization}
 \end{figure}
 where $l_{i}$ stands for the $i^{th}$ line and $v$ stands for the vanishing point near the image center, as illustrated in Fig.~\ref{fig:parameterization}(b).
@@ -125,15 +119,14 @@ Where the subscript $r$ represents a certain region for the corresponding semant
 \vb{L^*} = \arg\max_{\overline{L}} S(\vb{\overline{L}}~|~\vb{T})
 \end{equation}
 %
-We further modify the score function and apply it to the following optimization step:
+After the proposing-ranking framework, $\vb{L^*}$ is further refined to attain precise $\vb{L}$ using the optimization step in \cite{dasgupta2016delay}.
+\drf{
+(deleted)We further modify the score function and apply it to the following optimization step:
 %
 \begin{equation}
 \label{eq:optimize}
 S(\vb{L}~|~\vb{T}) = \frac{1}{wh}\sum_{r} \vb{T}_{r}^{L_{r}} + \frac{1}{wh}\sum_{r^*} \arg\max_{L_{r^*}} \vb{T}_{r^*}^{L_{r^*}}
 \end{equation}
 %
-Where $r \in$ \{Ceiling, Floor\} and $r^* \in$ \{Left, Front, Right\}. The second term including an argmax operation is designed for three walls. As shown in Fig.~\ref{fig:parameterization}(a), there is an inherent ambiguity between front wall and right/left wall. While Dasgupta et al. \cite{dasgupta2016delay} treat it as a special case, our score function cope with the ambiguity generally.
+Where $r \in$ \{Ceiling, Floor\} and $r^* \in$ \{Left, Front, Right\}. The second term including an argmax operation is designed for three walls. As shown in Fig.~\ref{fig:parameterization}(a), there is an inherent ambiguity between front wall and right/left wall. While Dasgupta et al. \cite{dasgupta2016delay} treat it as a special case, our score function cope with the ambiguity generally.}
 
-\comments{
-	First, We sample 30 rays from $vp_1$ and $vp_2$ separately to acquire numerous proposals. Then, we extend the modified score function in \cite{dasgupta2016delay} for special cases to adapt to all images. Given a specific label, We simply sum up the probability across 5 channels of $\vb{T}$ separately in the same region and choose the maximum as the score for this specific label. This policy is applied just among three walls which mainly cause the ambiguity. The same extended score function is adopted in optimization step. Our postprocessing framework generalize well to ambiguous cases.
-}
