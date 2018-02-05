@@ -4,7 +4,7 @@
 The main purpose of room layout estimation is to extract semantic boundaries among walls, ceiling and floor from a single image. It can be realized by obtaining corresponding semantic planes, as shown in Fig. \ref{fig:pipeline}. The task is challenging because of complex environmental factors such as illumination variations, viewpoints shift, objects diversity and clutter. Furthermore, distinctive clues like room corners and layout boundaries are often occluded by objects. 
 
 %%
-In recent years, massive researches have been carried out on room layout estimation. Conventional methods usually follow a proposing-ranking framework \cite{hedau2009recovering,wang2013discriminative,gupta2010estimating,hedau2010thinking}. Typically, they first generate numbers of proposals by vanishing point detection and ray sampling. Then a ranking step using hand-crafted features is adopted to select the best hypothesis. Recent methods built on FCNs \cite{long2015fully} or encoder-decoder networks achieve impressive performance \cite{mallya2015learning,ren2016coarse,zhang2016learning,dasgupta2016delay,LeeRoomNet17,zhao2017physics}. Specifically, 
+In recent years, massive researches have been carried out on room layout estimation. Conventional methods usually follow a proposing-ranking framework \cite{hedau2009recovering,wang2013discriminative,gupta2010estimating,hedau2010thinking}. Typically, they first generate numbers of proposals by vanishing point detection and ray sampling. Then a ranking step using hand-crafted features is adopted to select the best hypothesis. Recent methods built on FCNs \cite{long2015fully} or encoder-decoder networks achieve impressive performance \cite{mallya2015learning,ren2016coarse,zhang2017learning,dasgupta2016delay,LeeRoomNet17,zhao2017physics}. Specifically, 
 %
 Mallya \emph{et al}. \cite{mallya2015learning} presented an FCN for learning informative edge maps from images, which were then integrated into the conventional framework as additional features. 
 %
@@ -12,7 +12,7 @@ Dasgupta \emph{et al}. \cite{dasgupta2016delay} used an FCN to learn semantic su
 % 
 In a subsequent work \cite{ren2016coarse}, Ren \emph{et al}. adopted a multi-task fully convolutional neural network (MFCN) to jointly predict the surface labels and boundaries. Benefit from joint training, the semantic boundaries were more robust and accurate. They also optimized the results later with a refinement framework designed for boundaries.
 % 
-Zhang \emph{et al}. \cite{zhang2016learning} proposed an another deconvolution network which has multi-layer deconvolution and a receptive field as large as the entire image compared to FCN. As a result, they attained highly reliable edge maps. 
+Zhang \emph{et al}. \cite{zhang2017learning} proposed an another deconvolution network which has multi-layer deconvolution and a receptive field as large as the entire image compared to FCN. As a result, they attained highly reliable edge maps. 
 %
 End-to-End approach for room layout estimation had been explored by Lee \emph{et al}. \cite{LeeRoomNet17}. They employed an encoder-decoder network to delineate room layout structure using 2D keypoints.
 %
