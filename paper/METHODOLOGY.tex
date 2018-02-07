@@ -69,7 +69,7 @@ To get rid of these annoying spurious regions, we attempt to make our network mo
 We build the MC-FCN on a famous architecture ResNet-101 \cite{he2016deep} modified by \cite{chen2016deeplab}. As illustrated in Fig.~\ref{fig:fcn-multi-channel}, the estimated depth and normal maps are treated as additional channels associated with the input RGB images. The DeepLab-ResNet101 in \cite{chen2016deeplab} is designed to be multi-scale for semantic segmentation. While we consider the room layout as a high-level semantic information which is more dependent on global information, we further modify the network by clipping the multi-scale related layers. 
 
 \textbf{Training}
-We simply concatenate different types of data to a seven-channels input (3 channels from RGB, 1 channel from depth and 3 channels from normals) which is then fed into our network. We initialize the MC-FCN weights with a model from \cite{chen2016deeplab} except for the classifier layer and the first convolutional layer. The model has been pretrained on MS-COCO dataset. Then we specifically finetune our MC-FCN for semantic surface segmentation. 
+We simply concatenate different types of data to a seven-channels input (3 channels from RGB, 1 channel from depth and 3 channels from normals) which is then fed into our network. We initialize the MC-FCN weights with a model from \cite{chen2016deeplab} except for the classifier layer and the first convolutional layer. The model has been pretrained on PASCAL dataset. Then we specifically finetune our MC-FCN for semantic surface segmentation. 
 %
 \comments{We have also tried multi-task learning by adding a new branch for learning boundaries among surfaces as \cite{ren2016coarse, mallya2015learning} do. But the joint training does not help to improve the performance of both tasks in our case. This may indicate that our geometric hints have already integrated the additional information which should be learned through joint training.}
 
@@ -90,7 +90,7 @@ Indoor scene layout is modeled as the projection of a cuboid which can be define
 \begin{figure}
 	\centering
 	\includegraphics[width=8.5cm]{figure/parameterization.png}
-	\caption{(a) Ambiguity between front wall and right/left wall.\drf{should be deleted or replaced} (b) Illustration of the parameterized model $\tau$. }
+	\caption{ Illustration of the parameterized model $\tau$. The $vp_1$ and $vp_2$ are applied for extracting proposals. }
 	\label{fig:parameterization}
 \end{figure}
 where $l_{i}$ stands for the $i^{th}$ line and $v$ stands for the vanishing point near the image center, as illustrated in Fig.~\ref{fig:parameterization}(b).
@@ -120,7 +120,8 @@ Where the subscript $r$ represents a certain region for the corresponding semant
 \end{equation}
 %
 After the proposing-ranking framework, $\vb{L^*}$ is further refined to attain precise $\vb{L}$ using the optimization step in \cite{dasgupta2016delay}.
-\drf{
+
+\comments{
 (deleted)We further modify the score function and apply it to the following optimization step:
 %
 \begin{equation}
