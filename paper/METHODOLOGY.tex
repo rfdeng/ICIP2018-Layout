@@ -69,7 +69,7 @@ To get rid of these annoying spurious regions, we attempt to make our network mo
 We build the MC-FCN on a famous architecture ResNet-101 \cite{he2016deep} modified by \cite{chen2016deeplab}. As illustrated in Fig.~\ref{fig:fcn-multi-channel}, the estimated depth and normal maps are treated as additional channels associated with the input RGB images. The DeepLab-ResNet101 in \cite{chen2016deeplab} is designed to be multi-scale for semantic segmentation. While we consider the room layout as a high-level semantic information which is more dependent on global information, we further modify the network by clipping the multi-scale related layers. 
 
 \textbf{Training}
-We simply concatenate different types of data to a seven-channels input (3 channels from RGB, 1 channel from depth and 3 channels from normals) which is then fed into our network. We initialize the MC-FCN weights with a model from \cite{chen2016deeplab} except for the classifier layer and the first convolutional layer. The model has been pretrained on PASCAL dataset. Then we specifically finetune our MC-FCN for semantic surface segmentation. 
+We simply concatenate different types of data to a seven-channels input (3 channels from RGB, 1 channel from depth and 3 channels from normals) which is then fed into our network. We initialize the MC-FCN weights with a model pretrained on SUNRGBD dataset except for the classifier layer. Then the MC-FCN is specifically finetuned for semantic surface segmentation. 
 %
 \comments{We have also tried multi-task learning by adding a new branch for learning boundaries among surfaces as \cite{ren2016coarse, mallya2015learning} do. But the joint training does not help to improve the performance of both tasks in our case. This may indicate that our geometric hints have already integrated the additional information which should be learned through joint training.}
 
@@ -79,8 +79,7 @@ The output of our MC-FCN is a $w\times h \times 5$ probability array $\vb{T}$, w
 
 \subsection{Layout Optimization}
 \label{sec:optimization}
-We adopt a popular model that several researchers ~\cite{hedau2009recovering, wang2013discriminative, dasgupta2016delay, ren2016coarse} have used to parameterize indoor layout based on the Manhattan world assumption. 
-Indoor scene layout is modeled as the projection of a cuboid which can be defined by 
+We adopt a popular model that several researchers \cite{hedau2009recovering, wang2013discriminative, dasgupta2016delay, ren2016coarse} have used to parameterize indoor layout based on the Manhattan world assumption \cite{coughlan1999manhattan}. Indoor scene layout is modeled as the projection of a cuboid which can be defined by 
 
 \begin{equation}
 	\label{eq:Layout}
