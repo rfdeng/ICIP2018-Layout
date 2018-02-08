@@ -16,7 +16,7 @@ Under the Manhattan world assumption \cite{coughlan1999manhattan}, a room layout
 %
 Given an RGB image $\vb{I}$ with arbitrary size, our algorithm generates a room layout $\vb{L}$ that has a surface label for each pixel $L_{ij} $ in such 5-class set. Fig. \ref{fig:pipeline} shows our algorithm pipeline. 
 %%step 1
-in contrast to \cite{dasgupta2016delay,ren2016coarse}, we first estimate depth map $D_{I}$ and normal map $N_{I}$ from the input image to generate geometric hints using a multi-scale convolutional architecture~\cite{eigen2015predicting}, as described in Sec.~\ref{sec:depth_normal}.
+We first estimate depth map $D_{I}$ and normal map $N_{I}$ from the input image to generate geometric hints using a multi-scale convolutional architecture~\cite{eigen2015predicting}, as described in Sec.~\ref{sec:depth_normal}.
 %step 2
 After that, to integrate information from the original RGB image together with the geometric hints, a multi-channel fully convolutional network (MC-FCN) is trained. The MC-FCN is applied to predict five probability maps, each of which describes the belief for a specific layout surface, see details in Sec.~\ref{sec:surfacelabel}.
 %step 3: optimization
@@ -27,7 +27,7 @@ The estimated $\vb{\hat{L}}$ always have wavy boundaries and multiple disjoint c
 \subsection{Geometric Hints Extraction}
 \label{sec:depth_normal}
 
-We use the multi-scale convolutional network proposed in \cite{eigen2015predicting} to estimate the depth and normal maps from RGB images, some qualitative results are shown in Figure~\ref{fig:depthandnormal}. Note that we do not finetune their models with our data as we do not have the depth and normals of our dataset, however, the model seems to generalize well in our case. Quantitive evaluation of their work can be refered to in ~\cite{eigen2015predicting}.
+We use the multi-scale convolutional network proposed in \cite{eigen2015predicting} to estimate the depth and normal maps from RGB images, a qualitative result is shown in Figure~\ref{fig:depthandnormal}. Note that we do not finetune their models with our data as we do not have the depth and normals of our dataset, however, the model seems to generalize well in our case. Quantitive evaluation of their work can be refered to in ~\cite{eigen2015predicting}.
 %
 
 \begin{figure}
@@ -53,7 +53,7 @@ In some previous works, FCNs are used for semantic surface segmentation \cite{da
 %
 However, due to clutter, occlusion, complex textures and illumination variations in indoor scenes, the surface segmentation represented as $\vb{\hat{L}}$ are sometimes ruined by irregular spurious regions. Fig.~\ref{fig:fcn-comparison} demonstrates several typical bad cases.
 %
-To get rid of these annoying spurious regions, we attempt to make our network more robust to miscellaneous environmental factors. And for this purpose, a multi-channel FCN (MF-FCN) is adopted to incorporate geometric hints generated from the original image. 
+To get rid of these annoying spurious regions, we attempt to make our network more robust to miscellaneous environmental factors. And for this purpose, a multi-channel FCN (MC-FCN) is adopted to incorporate geometric hints generated from the original image. 
 %
 
 
