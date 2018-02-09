@@ -35,9 +35,9 @@ To explore the benefits of geometric hints for semantic surface segmentation, we
 \label{sec:LSUN}
 We train our multi-channel FCN on the relabeled LSUN dataset released by \cite{ren2016coarse}. The dataset consists of 4000 training, 394 validation, and 1000 testing images. We extract geometric hints from original images and resize all the images, depth and normal maps to $321\times321$ using bicubic interpolation. Then these three types of data are integrated to train the ResNet101 based multi-channel FCN. We evaluate our results using the official toolkit which provides two standard metrics: pixelwise error and corner error. The pixelwise error is computed by counting the percentage of pixels that are mismatched. (The Hungarian algorithm is applied to address the labeling ambiguity problem) The corner error is computed by calculating the Euclidean distance between predicted corners and corresponding ground truth corners.
 
-Our performance on LSUN test set compared with other methods is shown in Table~\ref{table:comparison-lsun}. Qualitative results are displayed in Fig.~\ref{fig:qualitative}. Our approach outperforms conventional methods \cite{hedau2009recovering,mallya2015learning} and most neural network based methods  \cite{zhang2017learning,dasgupta2016delay,ren2016coarse,LeeRoomNet17}. 
+Our performance on LSUN test set compared with other methods is shown in Table~\ref{table:comparison-lsun}. Qualitative results are displayed in Fig.~\ref{fig:qualitative}. Our approach outperforms conventional methods \cite{hedau2009recovering} and most neural network based methods  \cite{mallya2015learning,zhang2017learning,dasgupta2016delay,ren2016coarse,LeeRoomNet17}. 
 %
-Besides, when training the FCN, Zhao et al.~\cite{zhao2017physics} formulate the room layout using boundaries among semantic surfaces, while we formulate the room layout using the five semantic surfaces as \cite{dasgupta2016delay} do. These two representation may have different application prospects in the future. For example, when a home robot wants to locate itself while moving, the semantic boundaries are not always available. Our method may also be an inspiration for other surface estimation problems.
+Besides, when training the FCN, Zhao et al.~\cite{zhao2017physics} formulate the room layout using boundaries among semantic surfaces, while we formulate the room layout using the five semantic surfaces as \cite{dasgupta2016delay} do. These two representation may have different application prospects in the future. For example, when a home robot wants to locate itself while moving, the semantic boundaries are not always available. Our method may also be an inspiration for other surface detection problems.
 
 \comments{
 This kind of boundary representation has a intrinsic problem of unbalanced training data where most of the area is background. This may be the reason for the training problem, as claimed in \cite{zhao2017physics,mallya2015learning}. They both have to pretrain their model on an indoor scene dataset to make the training stable. While we formulate the room layout using the five semantic surfaces as \cite{dasgupta2016delay} do, our representation does not have this limitation. We pretrain our MC-FCN on both indoor scene dataset (SUNRGBD) and non-indoor scene dataset (PASCAL) separately. Both settings lead to stable training and competitive performance, as shown in \ref{table:comparison-lsun}. The model pretrained on SUNRGBD obtains a better result which should benefit from external indoor scene data in SUNRGBD. }
@@ -95,10 +95,10 @@ We also conduct experiment on a relatively smaller dataset published by \cite{he
 		Lee et al.~\cite{LeeRoomNet17} & 8.36 \\
 		Zhao et al.~\cite{zhao2017physics} & 6.60 \\
 		\midrule
-		Proposed MC-FCN & 6.63 \\
+		Proposed MC-FCN & 6.07 / 7.90 \\
 		\bottomrule
 	\end{tabular}
-	\caption{Performance on the Hedau's~\cite{hedau2009recovering} dataset}
+	\caption{Performance on the Hedau's~\cite{hedau2009recovering} dataset \drf{6.07 using the metric in \cite{LeeRoomNet17}, 7.90 using the metric in \cite{zhao2017physics}}}
 	\label{table:comparison-hedau}
 \end{table}
 
