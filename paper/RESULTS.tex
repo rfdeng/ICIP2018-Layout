@@ -1,16 +1,16 @@
 \section{RESULTS}
 \label{sec:Res}
 
-We prove the validity of the geometric hints in semantic surface segmentation and evaluate our method on two widely used dataset: Hedau's dataset \cite{hedau2009recovering} and LSUN dataset \cite{zhang2015large}. 
+We prove the validity of the geometric hint in semantic surface segmentation and evaluate our method on two widely used dataset: Hedau's dataset \cite{hedau2009recovering} and LSUN dataset \cite{zhang2015large}. 
 
-\subsection{Analysis of Geometric Hints}
+\subsection{Analysis of Geometric Hint}
 \label{sec:ablation}
-To explore the benefits of geometric hints for semantic surface segmentation, we train FCNs with or without geometric hints, respectively. Their performance are evaluated on LSUN validation set using pixel error of $\vb{\hat{L}}$, see Table~\ref{table:ablation}. To make fair comparisons with \cite{ren2016coarse, dasgupta2016delay}, both of which are built on VGG16, we train an MC-FCN based on VGG16 too. For \cite{ren2016coarse}, we directly apply their trained model to generate $\vb{\hat{L}}$. And for \cite{dasgupta2016delay}, we train an FCN having the same architecture in \cite{dasgupta2016delay}. As revealed by Table~\ref{table:ablation}, with the help of geometric hints, our MC-FCN obtain lower pixel error of $\vb{\hat{L}}$. We further improve the performance by employing a ResNet101-based FCN. Qualitative results are demonstrated in Fig.~\ref{fig:fcn-comparison}. (a)-(e) show typical good examples. Intuitively, the geometric hints help remove the spurious regions caused by clutter and generate more accurate semantic surface segmentation. (f) depicts a generally bad case that FCNs tend to be cheated by large truncated wall-like object surface, e.g., the bed looks like the floor. (g) is an another kind of bad case led by clutter while our MC-FCN produces relatively clearer results.  
+To explore the benefits of geometric hint for semantic surface segmentation, we train FCNs with or without geometric hint, respectively. Their performance are evaluated on LSUN validation set using pixel error of $\vb{\hat{L}}$, see Table~\ref{table:ablation}. To make fair comparisons with \cite{ren2016coarse, dasgupta2016delay}, both of which are built on VGG16, we train an MC-FCN based on VGG16 too. For \cite{ren2016coarse}, we directly apply their trained model to generate $\vb{\hat{L}}$. And for \cite{dasgupta2016delay}, we train an FCN having the same architecture in \cite{dasgupta2016delay}. As revealed by Table~\ref{table:ablation}, with the help of geometric hint, our MC-FCN obtain lower pixel error of $\vb{\hat{L}}$. We further improve the performance by employing a ResNet101 \cite{he2016deep} based FCN. Qualitative results are demonstrated in Fig.~\ref{fig:fcn-comparison}. (a)-(e) show typical good examples. Intuitively, the geometric hint help remove the spurious regions caused by clutter and generate more accurate semantic surface segmentation. (f) depicts a generally bad case that FCNs tend to be cheated by large truncated wall-like object surface, e.g., the bed looks like the floor. (g) is an another kind of bad case led by clutter while our MC-FCN produces relatively clearer results.  
 
 \begin{figure}[!ht]
 	\centering 
 	\textsc{\includegraphics[width=8.5cm]{figure/compare1.png}}
-	\caption{Surface segmentation results using different methods. All the networks are built on the VGG16 architecture. Our MC-FCN with geometric hints generates more accurate segmentation, especially  for complex environments.}
+	\caption{Surface segmentation results using different methods. All the networks are built on the VGG16 architecture. Our MC-FCN with geometric hint generates more accurate segmentation, especially  for complex environments.}
 	\label{fig:fcn-comparison}
 \end{figure}
 
@@ -26,13 +26,13 @@ To explore the benefits of geometric hints for semantic surface segmentation, we
 		MC-FCN (ResNet101) & 12.41 \\
 		\hline
 	\end{tabular}
-	\caption{Pixel error of semantic surface segmentation by different FCNs. By utilizing geometric hints, our proposed MC-FCN acquire more accurate segmentation. }	
+	\caption{Pixel error of semantic surface segmentation by different FCNs. By utilizing geometric hint, our proposed MC-FCN acquire more accurate segmentation. }	
 	\label{table:ablation}
 \end{table}
 
 \subsection{LSUN Results}
 \label{sec:LSUN}
-We train our multi-channel FCN on the relabeled LSUN dataset released by \cite{ren2016coarse}. The dataset consists of 4000 training, 394 validation, and 1000 testing images. We extract geometric hints from original images and resize all the images, depth and normal maps to $321\times321$ using bicubic interpolation. Then these three types of data are integrated to train the ResNet101 based multi-channel FCN. We evaluate our results using the official toolkit which provides two standard metrics: pixelwise error and corner error. The pixelwise error is computed by counting the percentage of pixels that are mismatched. The Hungarian algorithm is applied to address the labeling ambiguity problem.
+We train our multi-channel FCN on the relabeled LSUN dataset released by \cite{ren2016coarse}. The dataset consists of 4000 training, 394 validation, and 1000 testing images. We extract geometric hint from original images and resize all the images, depth and normal maps to $321\times321$ using bicubic interpolation. Then these three types of data are integrated to train the ResNet101 based multi-channel FCN. We evaluate our results using the official toolkit which provides two standard metrics: pixelwise error and corner error. The pixelwise error is computed by counting the percentage of pixels that are mismatched. The Hungarian algorithm is applied to address the labeling ambiguity problem.
 The corner error is computed by calculating the Euclidean distance between predicted corners and corresponding ground truth corners.
 
 Our performance on LSUN test set compared with other methods is shown in Table~\ref{table:comparison-lsun}. Qualitative results are displayed in Fig.~\ref{fig:qualitative}. Our approach outperforms conventional methods \cite{hedau2009recovering} and most neural network based methods  \cite{mallya2015learning,zhang2017learning,dasgupta2016delay,ren2016coarse,LeeRoomNet17}. 
@@ -79,7 +79,7 @@ Which formulation is better for room layout estimation remains an open question,
 
 \subsection{Hedau Results}
 \label{sec:Hedau}
-We also conduct experiment on a relatively smaller dataset published by \cite{hedau2009recovering}, which consists of 209 training images and 104 testing images. We follow the experimental setup in \cite{LeeRoomNet17} and directly predict the semantic surface on Hedau's test set using the model trained on LSUN. Pixel error is adopted to evaluate the final results, see Table~\ref{table:comparison-hedau}. Our performance is better than \cite{mallya2015learning,zhang2017learning,ren2016coarse}, all of which have trained their model on Hedau's training set. This indicates that our model has a good generalization ability. We achieve the performance close to state-of-the-art on this dataset.
+We also conduct experiment on a relatively smaller dataset published by \cite{hedau2009recovering}, which consists of 209 training images and 104 testing images. We follow the experimental setup in \cite{LeeRoomNet17} and directly predict the semantic surface on Hedau's test set using the model trained on LSUN. Pixel error is adopted to evaluate the final results, see Table~\ref{table:comparison-hedau}. Our performance is better than \cite{mallya2015learning,zhang2017learning,ren2016coarse}, all of which have trained their model on Hedau's training set. This indicates that our model has a good generalization ability. We achieve competitive performance on this benchmark dataset.
 
 \begin{table}
 	\centering 
@@ -95,10 +95,10 @@ We also conduct experiment on a relatively smaller dataset published by \cite{he
 		Lee et al.~\cite{LeeRoomNet17} & 8.36 \\
 		Zhao et al.~\cite{zhao2017physics} & 6.60 \\
 		\midrule
-		Proposed MC-FCN & 6.07 / 7.90 \\
+		Proposed MC-FCN & 6.63 \\
 		\bottomrule
 	\end{tabular}
-	\caption{Performance on the Hedau's~\cite{hedau2009recovering} dataset \drf{6.07 using the metric in \cite{LeeRoomNet17}, 7.90 using the metric in \cite{zhao2017physics}}}
+	\caption{Performance on the Hedau's~\cite{hedau2009recovering} dataset \comments{6.07 using the metric in \cite{LeeRoomNet17}, 7.90 using the metric in \cite{zhao2017physics}}}
 	\label{table:comparison-hedau}
 \end{table}
 

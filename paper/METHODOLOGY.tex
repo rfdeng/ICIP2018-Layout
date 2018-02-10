@@ -16,9 +16,9 @@ Under the Manhattan world assumption \cite{coughlan1999manhattan}, a room layout
 %
 Given an RGB image $\vb{I}$ with arbitrary size, our algorithm generates a room layout $\vb{L}$ that has a surface label for each pixel $L_{ij} $ in such 5-class set. Fig. \ref{fig:pipeline} shows our algorithm pipeline. 
 %%step 1
-We first estimate a depth map $D_{I}$ and a normal map $N_{I}$ from the input image to generate geometric hints using a multi-scale convolutional architecture~\cite{eigen2015predicting}, as described in Sec.~\ref{sec:depth_normal}.
+We first estimate a depth map $D_{I}$ and a normal map $N_{I}$ from the input image to generate geometric hint using a multi-scale convolutional architecture~\cite{eigen2015predicting}, as described in Sec.~\ref{sec:depth_normal}.
 %step 2
-After that, to integrate the information from the input RGB image together with the geometric hints, a multi-channel fully convolutional network (MC-FCN) is trained. The MC-FCN is applied to predict five probability maps, each of which describes the probability of a pixel belonging a specific layout surface, see details in Sec.~\ref{sec:surfacelabel}.
+After that, to integrate the information from the input RGB image together with the geometric hint, a multi-channel fully convolutional network (MC-FCN) is trained. The MC-FCN is applied to predict five probability maps, each of which describes the probability of a pixel belonging a specific layout surface, see details in Sec.~\ref{sec:surfacelabel}.
 %step 3: optimization
 While we can easily get access to a layout estimation $\vb{\hat{L}}$ by just choosing the label with the highest score across five probability maps for each pixel. 
 The estimated $\vb{\hat{L}}$ always have wavy boundaries and multiple disjoint connected regions due to the characteristics of neural network. To handle these problems and obtain more clear layout estimation with geometric constraints, an optimization step is adopted in Sec.~\ref{sec:optimization}.  
@@ -39,7 +39,7 @@ We use the multi-scale convolutional network proposed in \cite{eigen2015predicti
 
 We notice in practice that the depth and normals estimated from RGB images are not precise in local details. And the output resolution of the depth and normal maps are limited to half of the input. However, the valuable 3D information they provide is much helpful for high-level structure estimation, especially in messy scenes.  
 %
-As depicted in Fig.~\ref{fig:fcn-comparison}, depth and normals can serve as hints tending to merge big planes together under the interference factors like clutter and occlusion. 
+As depicted in Fig.~\ref{fig:fcn-comparison}, depth and normals can serve as hint tending to merge big planes together under the interference factors like clutter and occlusion. 
 %
 Therefore, we can apply these mid-level geometric hints to improve the performance of layout estimation. 
 %
@@ -55,7 +55,7 @@ However, due to the clutter, occlusion, complex textures and illumination variat
 Fig.~\ref{fig:fcn-comparison} demonstrates several typical bad cases.
 %
 To get rid of these annoying spurious regions, we attempt to make our network more robust to miscellaneous environmental factors. 
-And for this purpose, a multi-channel FCN (MC-FCN) is adopted to incorporate geometric hints generated from the original image. 
+And for this purpose, a multi-channel FCN (MC-FCN) is adopted to incorporate geometric hint generated from the original image. 
 %
 
 
@@ -70,17 +70,17 @@ And for this purpose, a multi-channel FCN (MC-FCN) is adopted to incorporate geo
 \noindent\textbf{Network Architecture.}
 We build the MC-FCN based on the DeepLab-ResNet101~\cite{chen2016deeplab}, which is designed to be multi-scale for semantic segmentation. 
 %
-While we consider the room layout as a high-level semantic information which is more dependent on global information, we further modify the network by clipping the multi-scale related layers. 
+While we consider the room layout as a high-level semantic information that rely more on global information, we modify the network by clipping the multi-scale related layers. 
 As illustrated in Fig.~\ref{fig:fcn-multi-channel}, the estimated depth and normal maps are treated as additional channels associated with the input RGB image. 
-We simply concatenate different types of data to a seven-channels input (3 channels from RGB, 1 channel from depth and 3 channels from normals) which is then fed into our network.
-\cxj{More description of the network architecture?}
+We simply concatenate different types of data to a seven-channels input (3 channels from RGB, 1 channel from depth and 3 channels from normals) which is then fed into our network. We also modify the interpolation layer to upsample the feature maps rather than downsample the groundtruths as \cite{chen2017rethinking} do.
+\comments{\cxj{More description of the network architecture?}}
 
 \noindent\textbf{Training} We initialize the MC-FCN weights with a model pretrained on SUNRGBD dataset except for the classifier layer. Then the MC-FCN is specifically finetuned for semantic surface segmentation. 
-\comments{We have also tried multi-task learning by adding a new branch for learning boundaries among surfaces as \cite{ren2016coarse, mallya2015learning} do. But the joint training does not help to improve the performance of both tasks in our case. This may indicate that our geometric hints have already integrated the additional information which should be learned through joint training.}
+\comments{We have also tried multi-task learning by adding a new branch for learning boundaries among surfaces as \cite{ren2016coarse, mallya2015learning} do. But the joint training does not help to improve the performance of both tasks in our case. This may indicate that our geometric hint have already integrated the additional information which should be learned through joint training.}
 %
 The output of our MC-FCN is a $w\times h \times 5$ probability array $\vb{T}$, where $w$ and $h$ stand for the width and length of the input image. Each of the 5 slices can be viewd as a probability map for the corresponding surface label, see Fig.~\ref{fig:fcn-multi-channel}. We utilize the probability array $\vb{T}$ as the basis for our scoring function in both proposals ranking and optimization step. 
 
-\comments{Some visualized results compared with FCN without geometric hints as additional input are shown in Fig.~\ref{fig:fcn-comparison}.}
+\comments{Some visualized results compared with FCN without geometric hint as additional input are shown in Fig.~\ref{fig:fcn-comparison}.}
 
 
 \begin{figure}
