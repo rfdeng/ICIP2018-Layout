@@ -5,27 +5,26 @@ We prove the validity of the geometric hints in semantic surface segmentation an
 
 \subsection{Analysis of Geometric Hints}
 \label{sec:ablation}
-To explore the benefits of geometric hints for semantic surface segmentation, we train FCNs with or without geometric hints as additional input. Their performance are evaluated on LSUN validation set using pixel error of $\vb{\hat{L}}$, see Table~\ref{table:ablation}. To make fair comparisons with \cite{ren2016coarse, dasgupta2016delay}, both of which are built on VGG16, we train an MC-FCN based on VGG16 too. For \cite{ren2016coarse}, we directly apply their trained model to generate $\vb{\hat{L}}$. And for \cite{dasgupta2016delay}, we train an FCN having the same architecture in \cite{dasgupta2016delay}. As revealed by Table~\ref{table:ablation}, with the help of geometric hints, our MC-FCN obtain lower pixel error of $\vb{\hat{L}}$. We further improve the performance by employing a ResNet101 based FCN. Qualitative results are demonstrated in Fig.~\ref{fig:fcn-comparison}. (a)-(e) show typical good examples. Intuitively, the geometric hints help remove the spurious regions caused by clutter and generate more accurate semantic surface segmentation. (f) depicts a generally bad case that FCNs tend to be cheated by large truncated wall-like object surface, e.g., the bed looks like the floor. (g) is an another kind of bad case led by clutter while our MC-FCN seems to produce relatively clear results.  
+To explore the benefits of geometric hints for semantic surface segmentation, we train FCNs with or without geometric hints, respectively. Their performance are evaluated on LSUN validation set using pixel error of $\vb{\hat{L}}$, see Table~\ref{table:ablation}. To make fair comparisons with \cite{ren2016coarse, dasgupta2016delay}, both of which are built on VGG16, we train an MC-FCN based on VGG16 too. For \cite{ren2016coarse}, we directly apply their trained model to generate $\vb{\hat{L}}$. And for \cite{dasgupta2016delay}, we train an FCN having the same architecture in \cite{dasgupta2016delay}. As revealed by Table~\ref{table:ablation}, with the help of geometric hints, our MC-FCN obtain lower pixel error of $\vb{\hat{L}}$. We further improve the performance by employing a ResNet101-based FCN. Qualitative results are demonstrated in Fig.~\ref{fig:fcn-comparison}. (a)-(e) show typical good examples. Intuitively, the geometric hints help remove the spurious regions caused by clutter and generate more accurate semantic surface segmentation. (f) depicts a generally bad case that FCNs tend to be cheated by large truncated wall-like object surface, e.g., the bed looks like the floor. (g) is an another kind of bad case led by clutter while our MC-FCN produces relatively clearer results.  
 
 \begin{figure}[!ht]
 	\centering 
 	\textsc{\includegraphics[width=8.5cm]{figure/compare1.png}}
-	\caption{Surface segmentation results using different architectures. All the networks are built on VGG16 architecture. Our MC-FCN with geometric hints generates more robust segmentation facing complex environmental factors.}
+	\caption{Surface segmentation results using different methods. All the networks are built on the VGG16 architecture. Our MC-FCN with geometric hints generates more accurate segmentation, especially  for complex environments.}
 	\label{fig:fcn-comparison}
 \end{figure}
 
 \begin{table}
 	\centering
-	\begin{tabular}{lc}
-		\toprule
+	\begin{tabular}{l|c} 
+		\hline
 		Network & $\epsilon_{pixel}$ (\%)\\
-		\midrule
+		\hline
 		Ren et al.~\cite{ren2016coarse} & 21.54 \\
-		Dasgupta et al.~\cite{dasgupta2016delay} & 15.86 \\  
-		\midrule
+		Dasgupta et al.~\cite{dasgupta2016delay} & 15.86 \\  \hline
 		MC-FCN (VGG16)  & 14.05 \\
 		MC-FCN (ResNet101) & 12.41 \\
-		\bottomrule
+		\hline
 	\end{tabular}
 	\caption{Pixel error of semantic surface segmentation by different FCNs. By utilizing geometric hints, our proposed MC-FCN acquire more accurate segmentation. }	
 	\label{table:ablation}
@@ -33,7 +32,8 @@ To explore the benefits of geometric hints for semantic surface segmentation, we
 
 \subsection{LSUN Results}
 \label{sec:LSUN}
-We train our multi-channel FCN on the relabeled LSUN dataset released by \cite{ren2016coarse}. The dataset consists of 4000 training, 394 validation, and 1000 testing images. We extract geometric hints from original images and resize all the images, depth and normal maps to $321\times321$ using bicubic interpolation. Then these three types of data are integrated to train the ResNet101 based multi-channel FCN. We evaluate our results using the official toolkit which provides two standard metrics: pixelwise error and corner error. The pixelwise error is computed by counting the percentage of pixels that are mismatched. (The Hungarian algorithm is applied to address the labeling ambiguity problem) The corner error is computed by calculating the Euclidean distance between predicted corners and corresponding ground truth corners.
+We train our multi-channel FCN on the relabeled LSUN dataset released by \cite{ren2016coarse}. The dataset consists of 4000 training, 394 validation, and 1000 testing images. We extract geometric hints from original images and resize all the images, depth and normal maps to $321\times321$ using bicubic interpolation. Then these three types of data are integrated to train the ResNet101 based multi-channel FCN. We evaluate our results using the official toolkit which provides two standard metrics: pixelwise error and corner error. The pixelwise error is computed by counting the percentage of pixels that are mismatched. The Hungarian algorithm is applied to address the labeling ambiguity problem.
+The corner error is computed by calculating the Euclidean distance between predicted corners and corresponding ground truth corners.
 
 Our performance on LSUN test set compared with other methods is shown in Table~\ref{table:comparison-lsun}. Qualitative results are displayed in Fig.~\ref{fig:qualitative}. Our approach outperforms conventional methods \cite{hedau2009recovering} and most neural network based methods  \cite{mallya2015learning,zhang2017learning,dasgupta2016delay,ren2016coarse,LeeRoomNet17}. 
 %

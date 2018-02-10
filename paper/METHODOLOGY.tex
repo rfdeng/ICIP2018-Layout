@@ -2,8 +2,8 @@
 \label{sec:Meth}
 
 
-\subsection{System Overview}
-\label{subsection:overview}
+%\subsection{System Overview}
+%\label{subsection:overview}
 
 \begin{figure}[!ht]
 	\centering
@@ -16,18 +16,18 @@ Under the Manhattan world assumption \cite{coughlan1999manhattan}, a room layout
 %
 Given an RGB image $\vb{I}$ with arbitrary size, our algorithm generates a room layout $\vb{L}$ that has a surface label for each pixel $L_{ij} $ in such 5-class set. Fig. \ref{fig:pipeline} shows our algorithm pipeline. 
 %%step 1
-We first estimate depth map $D_{I}$ and normal map $N_{I}$ from the input image to generate geometric hints using a multi-scale convolutional architecture~\cite{eigen2015predicting}, as described in Sec.~\ref{sec:depth_normal}.
+We first estimate a depth map $D_{I}$ and a normal map $N_{I}$ from the input image to generate geometric hints using a multi-scale convolutional architecture~\cite{eigen2015predicting}, as described in Sec.~\ref{sec:depth_normal}.
 %step 2
-After that, to integrate information from the original RGB image together with the geometric hints, a multi-channel fully convolutional network (MC-FCN) is trained. The MC-FCN is applied to predict five probability maps, each of which describes the belief for a specific layout surface, see details in Sec.~\ref{sec:surfacelabel}.
+After that, to integrate the information from the input RGB image together with the geometric hints, a multi-channel fully convolutional network (MC-FCN) is trained. The MC-FCN is applied to predict five probability maps, each of which describes the probability of a pixel belonging a specific layout surface, see details in Sec.~\ref{sec:surfacelabel}.
 %step 3: optimization
 While we can easily get access to a layout estimation $\vb{\hat{L}}$ by just choosing the label with the highest score across five probability maps for each pixel. 
-The estimated $\vb{\hat{L}}$ always have wavy boundaries and multiple disjoint connected domains due to the characteristics of neural network, see Fig.~\ref{fig:qualitative}. To handle these problems and obtain more clear layout estimation with geometric constraints, an optimization step is adopted in Sec.~\ref{sec:optimization}.  
+The estimated $\vb{\hat{L}}$ always have wavy boundaries and multiple disjoint connected regions due to the characteristics of neural network. To handle these problems and obtain more clear layout estimation with geometric constraints, an optimization step is adopted in Sec.~\ref{sec:optimization}.  
  
 
-\subsection{Geometric Hints Extraction}
+\subsection{Geometric Hint Extraction}
 \label{sec:depth_normal}
 
-We use the multi-scale convolutional network proposed in \cite{eigen2015predicting} to estimate the depth and normal maps from RGB images, a qualitative result is shown in Figure~\ref{fig:depthandnormal}. Note that we do not finetune their models with our data as we do not have the depth and normals of our dataset, however, the model seems to generalize well in our case. Quantitive evaluation of their work can be refered to in ~\cite{eigen2015predicting}.
+We use the multi-scale convolutional network proposed in \cite{eigen2015predicting} to estimate the depth and normal maps from RGB images, a qualitative result is shown in Figure~\ref{fig:depthandnormal}. Note that we do not finetune their models with our data as we do not have the depth and normals of our dataset, however, the model seems to generalize well in our case. Quantitative evaluation of their work can be referred to \cite{eigen2015predicting}.
 %
 
 \begin{figure}
@@ -45,15 +45,17 @@ Therefore, we can apply these mid-level geometric hints to improve the performan
 %
 
 
-The depth maps are color coded to 3-channels in \cite{eigen2015predicting} for distinction. In order to ensure the essence of depth and to reduce the redundant information, we modify their rendering section to obtain depth maps with single channel.
+The depth maps are color coded to 3-channels in \cite{eigen2015predicting} for distinction. In order to ensure the essence of depth and to reduce the redundant information, we modify their rendering section to obtain depth maps with a single channel.
 
 \subsection{Semantic Surface Segmentation Using MC-FCN}
 \label{sec:surfacelabel}
-In some previous works, FCNs are used for semantic surface segmentation \cite{dasgupta2016delay,ren2016coarse,mallya2015learning}. 
+In prior techniques, FCNs are widely used for semantic surface segmentation \cite{dasgupta2016delay,ren2016coarse,mallya2015learning}. 
 %
-However, due to clutter, occlusion, complex textures and illumination variations in indoor scenes, the surface segmentation represented as $\vb{\hat{L}}$ are sometimes ruined by irregular spurious regions. Fig.~\ref{fig:fcn-comparison} demonstrates several typical bad cases.
+However, due to the clutter, occlusion, complex textures and illumination variations in indoor scenes, the surface segmentation represented as $\vb{\hat{L}}$ are sometimes ruined by irregular spurious regions. 
+Fig.~\ref{fig:fcn-comparison} demonstrates several typical bad cases.
 %
-To get rid of these annoying spurious regions, we attempt to make our network more robust to miscellaneous environmental factors. And for this purpose, a multi-channel FCN (MC-FCN) is adopted to incorporate geometric hints generated from the original image. 
+To get rid of these annoying spurious regions, we attempt to make our network more robust to miscellaneous environmental factors. 
+And for this purpose, a multi-channel FCN (MC-FCN) is adopted to incorporate geometric hints generated from the original image. 
 %
 
 
@@ -65,26 +67,21 @@ To get rid of these annoying spurious regions, we attempt to make our network mo
 \end{figure}
 
 
-\textbf{Network Architecture}
-We build the MC-FCN on a famous architecture ResNet-101 \cite{he2016deep} modified by \cite{chen2016deeplab}. As illustrated in Fig.~\ref{fig:fcn-multi-channel}, the estimated depth and normal maps are treated as additional channels associated with the input RGB images. The DeepLab-ResNet101 in \cite{chen2016deeplab} is designed to be multi-scale for semantic segmentation. While we consider the room layout as a high-level semantic information which is more dependent on global information, we further modify the network by clipping the multi-scale related layers. 
-
-\textbf{Training}
-We simply concatenate different types of data to a seven-channels input (3 channels from RGB, 1 channel from depth and 3 channels from normals) which is then fed into our network. We initialize the MC-FCN weights with a model pretrained on SUNRGBD dataset except for the classifier layer. Then the MC-FCN is specifically finetuned for semantic surface segmentation. 
+\noindent\textbf{Network Architecture.}
+We build the MC-FCN based on the DeepLab-ResNet101~\cite{chen2016deeplab}, which is designed to be multi-scale for semantic segmentation. 
 %
-\comments{We have also tried multi-task learning by adding a new branch for learning boundaries among surfaces as \cite{ren2016coarse, mallya2015learning} do. But the joint training does not help to improve the performance of both tasks in our case. This may indicate that our geometric hints have already integrated the additional information which should be learned through joint training.}
+While we consider the room layout as a high-level semantic information which is more dependent on global information, we further modify the network by clipping the multi-scale related layers. 
+As illustrated in Fig.~\ref{fig:fcn-multi-channel}, the estimated depth and normal maps are treated as additional channels associated with the input RGB image. 
+We simply concatenate different types of data to a seven-channels input (3 channels from RGB, 1 channel from depth and 3 channels from normals) which is then fed into our network.
+\cxj{More description of the network architecture?}
 
+\noindent\textbf{Training} We initialize the MC-FCN weights with a model pretrained on SUNRGBD dataset except for the classifier layer. Then the MC-FCN is specifically finetuned for semantic surface segmentation. 
+\comments{We have also tried multi-task learning by adding a new branch for learning boundaries among surfaces as \cite{ren2016coarse, mallya2015learning} do. But the joint training does not help to improve the performance of both tasks in our case. This may indicate that our geometric hints have already integrated the additional information which should be learned through joint training.}
+%
 The output of our MC-FCN is a $w\times h \times 5$ probability array $\vb{T}$, where $w$ and $h$ stand for the width and length of the input image. Each of the 5 slices can be viewd as a probability map for the corresponding surface label, see Fig.~\ref{fig:fcn-multi-channel}. We utilize the probability array $\vb{T}$ as the basis for our scoring function in both proposals ranking and optimization step. 
 
 \comments{Some visualized results compared with FCN without geometric hints as additional input are shown in Fig.~\ref{fig:fcn-comparison}.}
 
-\subsection{Layout Optimization}
-\label{sec:optimization}
-We adopt a popular model that several researchers \cite{hedau2009recovering, wang2013discriminative, dasgupta2016delay, ren2016coarse} have used to parameterize indoor layout based on the Manhattan world assumption \cite{coughlan1999manhattan}. Indoor scene layout is modeled as the projection of a cuboid which can be defined by 
-
-\begin{equation}
-	\label{eq:Layout}
-	\tau = (l_1, l_2, l_3, l_4, vp_3)
-\end{equation}
 
 \begin{figure}
 	\centering
@@ -92,9 +89,23 @@ We adopt a popular model that several researchers \cite{hedau2009recovering, wan
 	\caption{ Illustration of the parameterized model $\tau$. The $vp_1$ and $vp_2$ are applied for extracting proposals. }
 	\label{fig:parameterization}
 \end{figure}
-where $l_{i}$ stands for the $i^{th}$ line and $v$ stands for the vanishing point near the image center, as illustrated in Fig.~\ref{fig:parameterization}(b).
+
+
+\subsection{Layout Optimization}
+\label{sec:optimization}
+We adopt a widely used model~\cite{hedau2009recovering, wang2013discriminative, dasgupta2016delay, ren2016coarse} to parameterize an indoor layout based on the Manhattan world assumption. Indoor scene layout is modeled as the projection of a cuboid which can be defined by 
+
+\begin{equation}
+	\label{eq:Layout}
+	\tau = (l_1, l_2, l_3, l_4, vp_3),
+\end{equation}
 %
-Dasgupta et al.~\cite{dasgupta2016delay} propose an iterative refinement algorithm to obtain precise $\vb{L}$. They directly take $\vb{\hat{L}}$ as initialization and preprocess it to address spurious regions and multiple disjoint components. However, as mentioned above, the initial $\vb{\hat{L}}$ generated from $\vb{T}$ are sometimes too ambiguous due to the characteristics of neural networks. The preprocessing step can not adapt to all the misleading situations, especially when the size of ambiguous walls are close. 
+where $l_{i}$ stands for the $i^{th}$ line and $vp_3$ stands for the vanishing point near the image center, as illustrated in Fig.~\ref{fig:parameterization}~(b).
+%
+Dasgupta et al.~\cite{dasgupta2016delay} proposed an iterative refinement algorithm to obtain a precise layout. 
+They directly take $\vb{\hat{L}}$ as initialization and process it to address spurious regions and multiple disjoint components. 
+However, as mentioned above, the initial $\vb{\hat{L}}$ generated from $\vb{T}$ is usually too ambiguous due to the characteristics of neural networks. 
+The preprocessing step can not adapt to all the misleading situations, especially when the sizes of ambiguous walls are similar. 
 %%
 \comments{
 The whole scene is equivalent to be labeled with five semantic surfaces, coresponding to \{Left, Front, Right, Ceiling, Ground\}, as described in Fig. \ref{fig:2.model}. Based on Eq. (\ref{eq:Layout}), each surface can be reconstructed with extension lines between vanishing point $v$ and Intersection point $p_i$ among $l_{i}$. ie $ve_i$ . Due to the uncertainty of camera pose, five surfaces are not always visible. Examples with different topologies are given in Fig. \ref{fig:different-layout-type}.
@@ -102,16 +113,16 @@ The whole scene is equivalent to be labeled with five semantic surfaces, corespo
 To obtain the optimized box layout $\vb{L}$, \cite{dasgupta2016delay} has propose a refinement algorithm. They first generate an initial $\vb{\hat{L}}$ by pick the label with the highest score across five channels of $\vb{T}$. Then a preprocessing step is used to address spurious regions and multiple disjoint components in $\vb{\hat{L}}$. Finally, an iterative optimization method is employed to acquire the refined $\vb{L}$. However, the initial $\vb{\hat{L}}$ generated from $\vb{T}$ are sometimes too ambiguous due to the characteristics of neural network. The preprocessing step can't adapt to all the bad situations well, especially when the ambiguous walls are close in size. 
 }
 
-To make the optimization method more general and efficient, we simplify the refinement algorithm in \cite{dasgupta2016delay} by replacing the initialization and preprocessing step with a proposing-ranking framework. The  framework directly generates the initial $\vb{L^*}$ consistent with the formulation in Eq.~\ref{eq:Layout}. This kind of $\vb{L^*}$ is much robust to ambiguous cases and easier for the optimization step to find the best layout.
+To make the optimization method more general and efficient, we simplify the refinement algorithm in \cite{dasgupta2016delay} by replacing the initialization and preprocessing step with a proposing-ranking framework. The framework directly generates the initial $\vb{L^*}$ consistent with the formulation in Eq.~\ref{eq:Layout}. This kind of $\vb{L^*}$ is much robust to ambiguous cases and easier for the optimization step to find the best layout.
 
 Our proposing-ranking framework is implemented using the proposing approach in \cite{hedau2009recovering} and constructing a score function based on $\vb{T}$. First, We sample 30 rays from $vp_1$ and $vp_2$ separately to acquire numerous proposals. Then, for any given proposal $\vb{\overline{L}}$ with $r$ semantic surfaces, we define the score function:
 %
 \begin{equation}
 \label{eq:scorefunction}
-S(\vb{\overline{L}}~|~\vb{T}) = \frac{1}{wh}\sum_r \vb{T}_r^{(\overline{L}_r)}
+S(\vb{\overline{L}}~|~\vb{T}) = \frac{1}{wh}\sum_r \vb{T}_r^{(\overline{L}_r)},
 \end{equation}
 %
-Where the subscript $r$ represents a certain region for the corresponding semantic surface. Then we select the proposal with the highest score as initial $\vb{L^*}$, namely:
+where the subscript $r$ represents a certain region for the corresponding semantic surface. Then we select the proposal with the highest score as initial $\vb{L^*}$, namely:
 %
 \begin{equation}
 \label{eq:initial}

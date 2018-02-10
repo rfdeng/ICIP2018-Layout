@@ -23,13 +23,12 @@
 
 % Title.
 % ------
-\title{Robust Room Layout Estimation with\\
-	Geometric Hints}
+\title{Robust Room Layout Estimation from a Single Image \\ with Geometric Hints}
 %
 % Single address.
 % ---------------
-\name{Authors\thanks{Thanks to XYZ agency for funding.}}
-\address{Address}
+\name{Paper 2133}
+\address{ }
 %
 % For example:
 % ------------
@@ -56,12 +55,17 @@
 \maketitle
 %
 \begin{abstract}
-We consider the problem of room layout estimation from a single RGB image. Previous methods based on fully convolutional neural networks (FCNs) suffer from heavy occlusion and clutter in indoor scenes. In this paper, we propose to handle these problems with geometric hints and generate more robust layout estimation. Our method consist of three steps: (1) depth and normals are extracted from the RGB image; (2) a multi-channel FCN (MC-FCN) is presented to integrate these geometric hints for semantic surface segmentation; (3) an optimization framework is adopted to refine the layout estimation. The proposed method has proven to be more robust to complex environmental factors. We achieve competitive performance on two commonly used benchmark datasets. 
+%In this paper, we consider the problem of room layout estimation from a single RGB image. Previous methods based on fully convolutional neural networks (FCNs) suffer from heavy occlusion and clutter in indoor scenes. 
+\mdf{Estimation of room layout suffers from heavy occlusion and clutter in indoor scens.}
+%
+In this paper, we propose a deep network that combines textures and geometric hints to predict the surface layout from a single image.
+%
+Our method consists of three steps: (1) depth and normals are extracted from the input RGB image; (2) a multi-channel FCN (MC-FCN) is presented to integrate these geometric hints for semantic surface segmentation; (3) an optimization framework is adopted to refine the layout estimation. The proposed method has proven to be more robust to complex environmental factors. We achieve competitive performance on two commonly used benchmark datasets. 
 	
 \end{abstract}
 %
 \begin{keywords}
-Layout estimation, scene understanding, geometric hints.
+Layout estimation, scene understanding, geometric hints
 \end{keywords}
 %
 \input{paper/INTRODUCTION}
