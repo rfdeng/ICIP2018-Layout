@@ -70,7 +70,7 @@ And for this purpose, a multi-channel FCN (MC-FCN) is adopted to incorporate geo
 \noindent\textbf{Network Architecture.}
 We build the MC-FCN based on the DeepLab-ResNet101~\cite{chen2016deeplab}, which is designed to be multi-scale for semantic segmentation. 
 %
-While we consider the room layout as a high-level semantic information that relys more on global information, we modify the network by clipping the multi-scale related layers. 
+While we consider the room layout as a high-level semantic information that relies more on global information, we modify the network by clipping the multi-scale related layers. 
 As illustrated in Fig.~\ref{fig:fcn-multi-channel}, the estimated depth and normal maps are treated as additional channels associated with the input RGB image. 
 We simply concatenate different types of data to a seven-channels input (3 channels from RGB, 1 channel from depth and 3 channels from normals) which is then fed into our network. Atrous convolution is adopted in our 5-way classifier layer.
 \comments{We also modify the interpolation layer to upsample the feature maps rather than downsample the groundtruths as \cite{chen2017rethinking} do.}
