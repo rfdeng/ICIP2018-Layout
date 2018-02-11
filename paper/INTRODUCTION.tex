@@ -1,7 +1,7 @@
 \section{Introduction}
 \label{sec:intro}
 
-The main purpose of room layout estimation is to extract semantic boundaries among walls, ceiling and floor from a single image. It can be realized by obtaining corresponding semantic planes, as shown in Fig. \ref{fig:pipeline}. The task is challenging because of complex environmental factors such as illumination variations, viewpoint shift, object diversity and clutter. Furthermore, distinctive clues like room corners and layout boundaries are often occluded by objects. 
+The main purpose of room layout estimation is to extract semantic boundaries among walls, ceiling and floor from a single image. It can be realized by obtaining corresponding semantic planes, as shown in Fig. \ref{fig:pipeline}. The task is challenging because of complex environmental factors such as illumination variation, viewpoint shift, object diversity and clutter. Furthermore, distinctive clues like room corners and layout boundaries are often occluded by objects. 
 
 %%
 In recent years, massive researches have been carried out on room layout estimation. Conventional methods usually follow a proposing-ranking framework \cite{hedau2009recovering,wang2013discriminative,gupta2010estimating,hedau2010thinking}. Typically, they first generate numbers of proposals through vanishing point detection and ray sampling. Then a ranking step using hand-crafted rules is adopted to select the best hypothesis. Recent methods built on FCNs \cite{long2015fully} or encoder-decoder networks achieve impressive performance \cite{mallya2015learning,ren2016coarse,zhang2017learning,dasgupta2016delay,LeeRoomNet17,zhao2017physics}. Specifically, 
@@ -10,13 +10,13 @@ Mallya et al.~\cite{mallya2015learning} presented an FCN for learning informativ
 %
 Dasgupta et al.~\cite{dasgupta2016delay} used an FCN to learn semantic surface labels including \{Left wall, Front wall, Right wall, Ceiling, Ground\} for each pixel. They obtained a segmentation depended on heat maps from FCN and further refined it with geometric projection constraints.
 % 
-In a subsequent technique~\cite{ren2016coarse}, Ren \emph{et al}. adopted a multi-task fully convolutional neural network (MFCN) to jointly predict the surface labels and boundaries. Benefit from joint training, the semantic boundaries are more accurate. They also optimized the results later with a refinement framework designed for boundaries.
+In a subsequent technique~\cite{ren2016coarse}, Ren et al. adopted a multi-task fully convolutional neural network (MFCN) to jointly predict the surface labels and boundaries. Benefit from joint training, the semantic boundaries are more accurate. They also optimized the results later with a refinement framework designed for boundaries.
 % 
-Zhang \emph{et al}.~\cite{zhang2017learning} proposed an another deconvolution network which has multi-layer deconvolution and a receptive field as large as the entire image compared to FCN. As a result, they attained highly reliable edge maps. 
+Zhang et al.~\cite{zhang2017learning} proposed an another deconvolution network which has multi-layer deconvolution and a receptive field as large as the entire image compared to FCN. As a result, they attained highly reliable edge maps. 
 %
-An end-to-end approach for room layout estimation was explored by Lee \emph{et al}.~\cite{LeeRoomNet17}. They employed an encoder-decoder network to delineate the room layout structure using 2D keypoints.
+An end-to-end approach for room layout estimation was explored by Lee et al.~\cite{LeeRoomNet17}. They employed an encoder-decoder network to delineate the room layout structure using 2D keypoints.
 %
-Zhao \emph{et al}. \cite{zhao2017physics} introduced a semantic transfer FCN to extract reliable edge features. They first trained an FCN for 37-class semantic segmentation and then bridged the gap to 4-class edge labels by adding a fully connected layer. A physics inspired inference scheme was designed for optimization.
+Zhao et al. \cite{zhao2017physics} introduced a semantic transfer FCN to extract reliable edge features. They first trained an FCN for 37-class semantic segmentation and then bridged the gap to 4-class edge labels by adding a fully connected layer. A physics inspired inference scheme was designed for optimization.
 
 
 Different from previous FCN based methods, we propose to improve the performance of room layout estimation from another perspective. We consider global geometric information as important as the texture in room layout estimation. To implicitly employ the geometric hint, depth and normals are estimated from the original image and fused into an multi-channel FCN. We use the same formulation of layout in \cite{dasgupta2016delay} and combine their optimization step with a proposing-ranking framework to attain precise layout. Experimental results demonstrate that our method is robust and effective for layout estimation even facing clutter and occlusion.
