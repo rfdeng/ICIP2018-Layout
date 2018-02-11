@@ -5,7 +5,7 @@ We prove the validity of the geometric hint in semantic surface segmentation and
 
 \subsection{Analysis of Geometric Hint}
 \label{sec:ablation}
-To explore the benefits of geometric hint for semantic surface segmentation, we train FCNs with or without geometric hint, respectively. Their performance are evaluated on LSUN validation set using pixel error of $\vb{\hat{L}}$, see Table~\ref{table:ablation}. To make fair comparisons with \cite{ren2016coarse, dasgupta2016delay}, both of which are built on VGG16, we train an MC-FCN based on VGG16 too. For \cite{ren2016coarse}, we directly apply their trained model to generate $\vb{\hat{L}}$. And for \cite{dasgupta2016delay}, we train an FCN having the same architecture in \cite{dasgupta2016delay}. As revealed by Table~\ref{table:ablation}, with the help of geometric hint, our MC-FCN obtain lower pixel error of $\vb{\hat{L}}$. We further improve the performance by employing a ResNet101 \cite{he2016deep} based FCN. Qualitative results are demonstrated in Fig.~\ref{fig:fcn-comparison}. (a)-(e) show typical good examples. Intuitively, the geometric hint help remove the spurious regions caused by clutter and generate more accurate semantic surface segmentation. (f) depicts a generally bad case that FCNs tend to be cheated by large truncated wall-like object surface, e.g., the bed looks like the floor. (g) is an another kind of bad case led by clutter while our MC-FCN produces relatively clearer results.  
+To explore the benefits of geometric hint for semantic surface segmentation, we train FCNs with or without geometric hint, respectively. Their performance are evaluated on LSUN validation set using pixel error of $\vb{\hat{L}}$, see Table~\ref{table:ablation}. To make fair comparisons with \cite{ren2016coarse, dasgupta2016delay}, both of which are built on VGG16, we train an MC-FCN based on VGG16 too. For \cite{ren2016coarse}, we directly apply their trained model to generate $\vb{\hat{L}}$. And for \cite{dasgupta2016delay}, we train an FCN having the same architecture in \cite{dasgupta2016delay}. As revealed by Table~\ref{table:ablation}, with the help of geometric hint, our MC-FCN obtains lower pixel error of $\vb{\hat{L}}$. We further improve the performance by employing a ResNet101 \cite{he2016deep} based FCN. Qualitative results are demonstrated in Fig.~\ref{fig:fcn-comparison}. (a)-(e) show typical good examples. Intuitively, the geometric hint helps remove the spurious regions caused by clutter and generate more accurate semantic surface segmentation. (f) depicts a generally bad case that FCNs tend to be cheated by large truncated wall-like object surface, e.g., the bed looks like the floor. (g) is an another kind of bad case led by clutter while our MC-FCN produces relatively clearer results.  
 
 \begin{figure}[!ht]
 	\centering 
@@ -26,7 +26,7 @@ To explore the benefits of geometric hint for semantic surface segmentation, we 
 		MC-FCN (ResNet101) & 11.45 \\
 		\hline
 	\end{tabular}
-	\caption{Pixel error of semantic surface segmentation by different FCNs. By utilizing geometric hint, our proposed MC-FCN acquire more accurate segmentation. }	
+	\caption{Pixel error of semantic surface segmentation by different FCNs. By utilizing geometric hint, our proposed MC-FCNs acquire more accurate segmentation. }	
 	\label{table:ablation}
 \end{table}
 

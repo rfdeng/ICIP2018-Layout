@@ -76,7 +76,7 @@ We simply concatenate different types of data to a seven-channels input (3 chann
 \comments{We also modify the interpolation layer to upsample the feature maps rather than downsample the groundtruths as \cite{chen2017rethinking} do.}
 \comments{\cxj{More description of the network architecture?}}
 
-\noindent\textbf{Training} We initialize the MC-FCN weights with a model pretrained on SUNRGBD dataset except for the classifier layer. Then the MC-FCN is specifically finetuned for semantic surface segmentation. 
+\noindent\textbf{Training.} We initialize the MC-FCN weights with a model pretrained on SUNRGBD dataset except for the classifier layer. Then the MC-FCN is specifically finetuned for semantic surface segmentation. 
 \comments{We have also tried multi-task learning by adding a new branch for learning boundaries among surfaces as \cite{ren2016coarse, mallya2015learning} do. But the joint training does not help to improve the performance of both tasks in our case. This may indicate that our geometric hint have already integrated the additional information which should be learned through joint training.}
 %
 The output of our MC-FCN is a $w\times h \times 5$ probability array $\vb{T}$, where $w$ and $h$ stand for the width and length of the input image. Each of the 5 slices can be viewd as a probability map for the corresponding surface label, see Fig.~\ref{fig:fcn-multi-channel}. We utilize the probability array $\vb{T}$ as the basis for our scoring function in both proposals ranking and optimization step. 
@@ -127,7 +127,7 @@ where the subscript $r$ represents a certain region for the corresponding semant
 %
 \begin{equation}
 \label{eq:initial}
-\vb{L^*} = \arg\max_{\overline{L}} S(\vb{\overline{L}}~|~\vb{T})
+\vb{L^*} = \arg\max_{\vb{\overline{L}}} S(\vb{\overline{L}}~|~\vb{T})
 \end{equation}
 %
 After the proposing-ranking framework, $\vb{L^*}$ is further refined to attain precise $\vb{L}$ using the optimization step in \cite{dasgupta2016delay}.
