@@ -72,7 +72,8 @@ We build the MC-FCN based on the DeepLab-ResNet101~\cite{chen2016deeplab}, which
 %
 While we consider the room layout as a high-level semantic information that rely more on global information, we modify the network by clipping the multi-scale related layers. 
 As illustrated in Fig.~\ref{fig:fcn-multi-channel}, the estimated depth and normal maps are treated as additional channels associated with the input RGB image. 
-We simply concatenate different types of data to a seven-channels input (3 channels from RGB, 1 channel from depth and 3 channels from normals) which is then fed into our network. We also modify the interpolation layer to upsample the feature maps rather than downsample the groundtruths as \cite{chen2017rethinking} do.
+We simply concatenate different types of data to a seven-channels input (3 channels from RGB, 1 channel from depth and 3 channels from normals) which is then fed into our network. Atrous convolution is adopted in our 5-way classifier layer.
+\comments{We also modify the interpolation layer to upsample the feature maps rather than downsample the groundtruths as \cite{chen2017rethinking} do.}
 \comments{\cxj{More description of the network architecture?}}
 
 \noindent\textbf{Training} We initialize the MC-FCN weights with a model pretrained on SUNRGBD dataset except for the classifier layer. Then the MC-FCN is specifically finetuned for semantic surface segmentation. 
