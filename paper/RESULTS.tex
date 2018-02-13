@@ -32,8 +32,7 @@ To explore the benefits of geometric hint for semantic surface segmentation, we 
 
 \subsection{LSUN Results}
 \label{sec:LSUN}
-We train our multi-channel FCN on the relabeled LSUN dataset released by \cite{ren2016coarse}. The dataset consists of 4000 training, 394 validation, and 1000 testing images. We extract geometric hint from original images and resize all the images, depth and normal maps to $321\times321$ using bicubic interpolation. Then these three types of data are integrated to train the ResNet101-based multi-channel FCN. We evaluate our results using the official toolkit which provides two standard metrics: pixelwise error and corner error. The pixelwise error is computed by counting the percentage of pixels that are mismatched. The Hungarian algorithm is applied to address the labeling ambiguity problem.
-The corner error is computed by calculating the Euclidean distance between predicted corners and corresponding ground truth corners.
+We train our multi-channel FCN on the relabeled LSUN dataset released by \cite{ren2016coarse}. The dataset consists of 4000 training, 394 validation, and 1000 testing images. We extract geometric hint from original images and resize all the images, depth and normal maps to $321\times321$ using bicubic interpolation. Then these three types of data are integrated to train the ResNet101-based multi-channel FCN. We evaluate our results using the official toolkit which provides two standard metrics: pixelwise error and corner error. The pixelwise error is computed by counting the percentage of pixels that are mismatched. The corner error is computed by calculating the Euclidean distance between predicted corners and corresponding ground truth corners.
 
 Our performance on LSUN test set compared with other methods is shown in Table~\ref{table:comparison-lsun}. Qualitative results are displayed in Fig.~\ref{fig:qualitative}. Our approach outperforms conventional methods \cite{hedau2009recovering} and most neural network based methods  \cite{mallya2015learning,zhang2017learning,dasgupta2016delay,ren2016coarse,LeeRoomNet17}. 
 %
@@ -70,7 +69,7 @@ Which formulation is better for room layout estimation remains an open question,
 		Lee et al.~\cite{LeeRoomNet17} & 6.30 & 9.86 \\
 		Zhao et al.~\cite{zhao2017physics} & 3.84 & 5.29 \\
 		\midrule
-		Proposed MC-FCN & 5.53 & 7.84 \\
+		Proposed MC-FCN & 4.98 & 6.91 \\
 		\bottomrule
 	\end{tabular}
 	\caption{Performance on the LSUN~\cite{zhang2015large} dataset}	
@@ -79,7 +78,7 @@ Which formulation is better for room layout estimation remains an open question,
 
 \subsection{Hedau Results}
 \label{sec:Hedau}
-We also conduct experiment on a relatively smaller dataset published by \cite{hedau2009recovering}, which consists of 209 training images and 104 testing images. We follow the experimental setup in \cite{LeeRoomNet17} and directly predict the semantic surface on Hedau's test set using the model trained on LSUN. Pixel error is adopted to evaluate the final results, see Table~\ref{table:comparison-hedau}. Our performance is better than \cite{mallya2015learning,zhang2017learning,ren2016coarse}, all of which have trained their model on Hedau's training set. This indicates that our model has a good generalization ability. We achieve competitive performance on this benchmark dataset.
+We also conduct experiment on Hedau's \cite{hedau2009recovering} dataset, which consists of 209 training images and 104 testing images. Since the semantic boundaries in the segmentation ground truth are thick and are treated as a new category in this dataset. We perform boundary thinning to one pixel width by assigning them with the closest segmentation label as \cite{LeeRoomNet17} do. We directly evaluate our method on Hedau's test set using the model trained on LSUN. Pixel error is adopted as metric, see Table~\ref{table:comparison-hedau}. Our performance is better than \cite{mallya2015learning,zhang2017learning,ren2016coarse}, all of which have trained their model on Hedau's training set. This indicates that our model has a good generalization ability. We achieve impressive performance on this dataset.
 
 \begin{table}
 	\centering 
@@ -95,7 +94,7 @@ We also conduct experiment on a relatively smaller dataset published by \cite{he
 		Lee et al.~\cite{LeeRoomNet17} & 8.36 \\
 		Zhao et al.~\cite{zhao2017physics} & 6.60 \\
 		\midrule
-		Proposed MC-FCN & 6.63 \\
+		Proposed MC-FCN & 6.07 \\
 		\bottomrule
 	\end{tabular}
 	\caption{Performance on the Hedau's~\cite{hedau2009recovering} dataset \comments{6.07 using the metric in \cite{LeeRoomNet17}, 7.90 using the metric in \cite{zhao2017physics}}}
