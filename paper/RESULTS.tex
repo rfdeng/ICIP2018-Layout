@@ -1,11 +1,11 @@
 \section{RESULTS}
 \label{sec:Res}
 
-We prove the validity of the geometric hint in semantic surface segmentation and evaluate our method on two widely used dataset: Hedau's dataset \cite{hedau2009recovering} and LSUN dataset \cite{zhang2015large}. 
+We prove the validity of the geometric hint in semantic surface segmentation and evaluate our method on two widely used dataset: LSUN dataset \cite{zhang2015large} and Hedau's dataset \cite{hedau2009recovering}. 
 
 \subsection{Analysis of Geometric Hint}
 \label{sec:ablation}
-To explore the benefits of geometric hint for semantic surface segmentation, we train FCNs with or without geometric hint, respectively. Their performance are evaluated on LSUN validation set using pixel error of $\vb{\hat{L}}$, see Table~\ref{table:ablation}. To make fair comparisons with \cite{ren2016coarse, dasgupta2016delay}, both of which are built on VGG16, we train an MC-FCN based on VGG16 too. For \cite{ren2016coarse}, we directly apply their trained model to generate $\vb{\hat{L}}$. And for \cite{dasgupta2016delay}, we train an FCN having the same architecture in \cite{dasgupta2016delay}. As revealed by Table~\ref{table:ablation}, with the help of geometric hint, our MC-FCN obtains lower pixel error of $\vb{\hat{L}}$. We further improve the performance by employing a ResNet101 \cite{he2016deep} based FCN. Qualitative results are demonstrated in Fig.~\ref{fig:fcn-comparison}. (a)-(e) show typical good examples. Intuitively, the geometric hint helps remove the spurious regions caused by clutter and generate more accurate semantic surface segmentation. (f) depicts a generally bad case that FCNs tend to be cheated by large truncated wall-like object surface, e.g., the bed looks like the floor. (g) is an another kind of bad case led by clutter while our MC-FCN produces relatively clearer results.  
+To explore the benefits of geometric hint for semantic surface segmentation, we train FCNs with or without geometric hint, respectively. Their performance are evaluated on LSUN validation set using pixel error of $\vb{\hat{L}}$, which can be seen in Table~\ref{table:ablation}. To make fair comparisons with \cite{ren2016coarse, dasgupta2016delay}, both of which are built on VGG16, we train an MC-FCN based on VGG16 too. For \cite{ren2016coarse}, we directly apply their trained model to generate $\vb{\hat{L}}$. And for \cite{dasgupta2016delay}, we train an FCN having the same architecture in \cite{dasgupta2016delay}. As revealed by Table~\ref{table:ablation}, with the help of geometric hint, our MC-FCN obtains lower pixel error of $\vb{\hat{L}}$. We further improve the performance by employing a ResNet101 \cite{he2016deep} based FCN. Qualitative results are demonstrated in Fig.~\ref{fig:fcn-comparison}. (a)-(e) show typical good examples. Intuitively, the traditional FCNs are sometimes confused by different surfaces and generate spurious regions due to occlusion and clutter. While the geometric hint can help to get rid of these uncertainties and attain more accurate semantic surface segmentation. (f) depicts a generally bad case that FCNs tend to be cheated by large truncated wall-like object surface, e.g., the bed looks like the floor. This may be the result of ignoring the semantics of the objects. (g) is an another kind of bad case led by clutter while our MC-FCN produces relatively clearer results.  
 
 \begin{figure}[!ht]
 	\centering 
@@ -34,7 +34,7 @@ To explore the benefits of geometric hint for semantic surface segmentation, we 
 \label{sec:LSUN}
 We train our multi-channel FCN on the relabeled LSUN dataset released by \cite{ren2016coarse}. The dataset consists of 4000 training, 394 validation, and 1000 testing images. We extract geometric hint from original images and resize all the images, depth and normal maps to $321\times321$ using bicubic interpolation. Then these three types of data are integrated to train the ResNet101-based multi-channel FCN. We evaluate our results using the official toolkit which provides two standard metrics: pixelwise error and corner error. The pixelwise error is computed by counting the percentage of pixels that are mismatched. The corner error is computed by calculating the Euclidean distance between predicted corners and corresponding ground truth corners.
 
-Our performance on LSUN test set compared with other methods is shown in Table~\ref{table:comparison-lsun}. Qualitative results are displayed in Fig.~\ref{fig:qualitative}. Our approach outperforms conventional methods \cite{hedau2009recovering} and most neural network based methods  \cite{mallya2015learning,zhang2017learning,dasgupta2016delay,ren2016coarse,LeeRoomNet17}. 
+We summarize the performance on LSUN test set in Table~\ref{table:comparison-lsun}. Qualitative results are displayed in Fig.~\ref{fig:qualitative}. Our approach outperforms conventional methods \cite{hedau2009recovering} and most neural network based methods  \cite{mallya2015learning,zhang2017learning,dasgupta2016delay,ren2016coarse,LeeRoomNet17} on both metrics. 
 %
 Besides, when training the FCN, Zhao et al.~\cite{zhao2017physics} formulate the room layout using boundaries among semantic surfaces, while we formulate the room layout using the five semantic surfaces as \cite{dasgupta2016delay} do. These two representation may have different application prospects in the future. For example, when a home robot wants to locate itself while moving, the semantic boundaries are not always available. Our method may also be an inspiration for other surface detection problems.
 
@@ -51,7 +51,7 @@ Which formulation is better for room layout estimation remains an open question,
 \begin{figure}[!ht]
 	\centering
 	\textsc{\includegraphics[width=8.5cm]{figure/qualitive.png}}
-	\caption{Qualitative results of our methods on LSUN validation set. (a)-(e) depict precise results. (f)(g) show failure cases misled by $\vb{\hat{L}}$. }
+	\caption{Qualitative results and their pixel error of our method on LSUN validation set. Ground truth is shown in red. (a)-(e) depict precise results. (f)(g) show failure cases misled by $\vb{\hat{L}}$. }
 	\label{fig:qualitative}
 \end{figure}
 
@@ -78,7 +78,7 @@ Which formulation is better for room layout estimation remains an open question,
 
 \subsection{Hedau Results}
 \label{sec:Hedau}
-We also conduct experiment on Hedau's \cite{hedau2009recovering} dataset, which consists of 209 training images and 104 testing images. Since the semantic boundaries in the segmentation ground truth are thick and are treated as a new category in this dataset. We perform boundary thinning to one pixel width by assigning them with the closest segmentation label as \cite{LeeRoomNet17} do. We directly evaluate our method on Hedau's test set using the model trained on LSUN. Pixel error is adopted as metric, see Table~\ref{table:comparison-hedau}. Our performance is better than \cite{mallya2015learning,zhang2017learning,ren2016coarse}, all of which have trained their model on Hedau's training set. This indicates that our model has a good generalization ability. We achieve impressive performance on this dataset.
+We also conduct experiment on Hedau's \cite{hedau2009recovering} dataset, which consists of 209 training images and 104 testing images. Since the semantic boundaries in the segmentation ground truth are thick and are treated as a new category in this dataset. We perform boundary thinning to one pixel width by assigning them with the closest segmentation label as \cite{LeeRoomNet17} do. We directly evaluate our method on Hedau's test set using the model trained on LSUN. Pixel error is adopted as metric. As shown by Table~\ref{table:comparison-hedau}, our performance is better than \cite{mallya2015learning,zhang2017learning,ren2016coarse}, all of which have trained their model on Hedau's training set. This indicates that our model has a good generalization ability. We achieve impressive performance on this dataset.
 
 \begin{table}
 	\centering 
