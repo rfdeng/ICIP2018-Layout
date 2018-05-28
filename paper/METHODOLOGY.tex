@@ -18,7 +18,7 @@ Given an RGB image $\vb{I}$ with arbitrary size, our algorithm generates a room 
 %%step 1
 We first estimate a depth map $D_{I}$ and a normal map $N_{I}$ from the input image to generate geometric hint using a multi-scale convolutional architecture~\cite{eigen2015predicting}, as described in Sec.~\ref{sec:depth_normal}.
 %step 2
-After that, to integrate the information from the input RGB image together with the geometric hint, a multi-channel fully convolutional network (MC-FCN) is trained. The MC-FCN is applied to predict five probability maps, each of which describes the probability of a pixel belonging a specific layout surface, see details in Sec.~\ref{sec:surfacelabel}.
+After that, to integrate the information from the input RGB image together with the geometric hint, a multi-channel fully convolutional network (MC-FCN) is trained. The MC-FCN is applied to predict five probability maps, each of which describes the probability of a pixel belonging to a specific layout surface, see details in Sec.~\ref{sec:surfacelabel}.
 %step 3: optimization
 While we can easily get access to a layout estimation $\vb{\hat{L}}$ by choosing the label with the highest score across five probability maps for each pixel. 
 The estimated $\vb{\hat{L}}$ always has wavy boundaries and multiple disjoint connected regions due to the characteristics of neural network. To handle these problems and obtain clearer layout estimation with geometric constraints, an optimization step is adopted in Sec.~\ref{sec:optimization}.  
@@ -78,7 +78,7 @@ We simply concatenate different types of data to a seven-channels input (3 chann
 
 \noindent\textbf{Training.} We initialize the MC-FCN weights with a model pretrained on SUNRGBD dataset except for the classifier layer. After that, the MC-FCN is specifically finetuned for semantic surface segmentation.
 %
-The output of our MC-FCN is a $w\times h \times 5$ probability array $\vb{T}$, where $w$ and $h$ stand for the width and length of the input image. Each of the 5 slices can be viewd as a probability map for the corresponding surface label, as shown in Fig.~\ref{fig:fcn-multi-channel}. We utilize the probability array $\vb{T}$ as the basis for our scoring function in both proposals ranking and optimization step. 
+The output of our MC-FCN is a $w\times h \times 5$ probability array $\vb{T}$, where $w$ and $h$ stand for the width and length of the input image. Each of the 5 slices can be viewd as a probability map for the corresponding surface label, as shown in Fig.~\ref{fig:fcn-multi-channel}. We utilize the probability array $\vb{T}$ as the basis for our scoring function in both proposal ranking and optimization step. 
 
 \comments{Some visualized results compared with FCN without geometric hint as additional input are shown in Fig.~\ref{fig:fcn-comparison}.}
 
@@ -110,7 +110,7 @@ The preprocessing step can not adapt to all the misleading situations, especiall
 
 To make the optimization method more general and efficient, we simplify the refinement algorithm in \cite{dasgupta2016delay} by replacing the initialization and preprocessing step with a proposing-ranking framework. The framework directly generates the initial $\vb{L^*}$ consistent with the formulation in Eq.~\ref{eq:Layout}. This kind of $\vb{L^*}$ is much robust to ambiguous cases and easier for the optimization step to find the best layout.
 
-Our proposing-ranking framework is implemented using the proposing approach in \cite{hedau2009recovering} and constructing a score function based on $\vb{T}$. First, straight lines are found and grouped to detect three vanishing points. Then we sample 30 rays from $vp_1$ and $vp_2$ separately to acquire numerous proposals, each of which is specified by two rays from each vanishing point. Finally, for any given proposal $\vb{\overline{L}}$ with $r$ semantic surfaces, we define the score function:
+Our proposing-ranking framework is implemented by using the proposing approach in \cite{hedau2009recovering} and constructing a score function based on $\vb{T}$. At first, straight lines are found and grouped to detect three vanishing points. Then we sample 30 rays from $vp_1$ and $vp_2$ separately to acquire numerous proposals, each of which is specified by two rays from each vanishing point. Finally, for any given proposal $\vb{\overline{L}}$ with $r$ semantic surfaces, we define the score function:
 %
 \begin{equation}
 \label{eq:scorefunction}
