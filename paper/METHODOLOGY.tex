@@ -21,7 +21,7 @@ We first estimate a depth map $D_{I}$ and a normal map $N_{I}$ from the input im
 After that, to integrate the information from the input RGB image together with the geometric hint, a multi-channel fully convolutional network (MC-FCN) is trained. The MC-FCN is applied to predict five probability maps, each of which describes the probability of a pixel belonging a specific layout surface, see details in Sec.~\ref{sec:surfacelabel}.
 %step 3: optimization
 While we can easily get access to a layout estimation $\vb{\hat{L}}$ by choosing the label with the highest score across five probability maps for each pixel. 
-The estimated $\vb{\hat{L}}$ always have wavy boundaries and multiple disjoint connected regions due to the characteristics of neural network. To handle these problems and obtain clearer layout estimation with geometric constraints, an optimization step is adopted in Sec.~\ref{sec:optimization}.  
+The estimated $\vb{\hat{L}}$ always has wavy boundaries and multiple disjoint connected regions due to the characteristics of neural network. To handle these problems and obtain clearer layout estimation with geometric constraints, an optimization step is adopted in Sec.~\ref{sec:optimization}.  
  
 
 \subsection{Geometric Hint Extraction}
@@ -37,7 +37,7 @@ We use the multi-scale convolutional network proposed in \cite{eigen2015predicti
 	\label{fig:depthandnormal}
 \end{figure}
 
-We notice in practice that the depth and normals estimated from RGB images are not precise in local details. And the output resolution of the depth and normal maps are limited to half of the input. However, the valuable 3D information they provided is much helpful for high-level structure estimation, especially in messy scenes.  
+We notice in practice that the depth and normals estimated from RGB images are not precise in local details. And the output resolution of the depth and normal maps is limited to half of the input. However, the valuable 3D information they provided is much helpful for high-level structure estimation, especially in messy scenes.  
 %
 As analysed in Sec.~\ref{sec:ablation}, depth and normals can serve as hints tending to merge big planes together under the interference factors like clutter and occlusion. 
 %
@@ -51,7 +51,7 @@ The depth maps are color coded to 3-channels in \cite{eigen2015predicting} for d
 \label{sec:surfacelabel}
 In prior techniques, FCNs are widely used for semantic surface segmentation \cite{dasgupta2016delay,ren2016coarse,mallya2015learning}. 
 %
-However, due to the clutter, occlusion, complex textures and illumination variations in indoor scenes, the surface segmentation represented as $\vb{\hat{L}}$ are sometimes ruined by irregular spurious regions. 
+However, due to the clutter, occlusion, complex textures and illumination variations in indoor scenes, the surface segmentation represented as $\vb{\hat{L}}$ is sometimes ruined by irregular spurious regions. 
 Fig.~\ref{fig:fcn-comparison} demonstrates several typical bad cases.
 %
 To get rid of these annoying spurious regions, we attempt to make our network more robust to miscellaneous environmental factors. 
@@ -78,7 +78,7 @@ We simply concatenate different types of data to a seven-channels input (3 chann
 
 \noindent\textbf{Training.} We initialize the MC-FCN weights with a model pretrained on SUNRGBD dataset except for the classifier layer. After that, the MC-FCN is specifically finetuned for semantic surface segmentation.
 %
-The output of our MC-FCN is a $w\times h \times 5$ probability array $\vb{T}$, where $w$ and $h$ stand for the width and length of the input image. Each of the 5 slices can be viewd as a probability map for the corresponding surface label, see Fig.~\ref{fig:fcn-multi-channel}. We utilize the probability array $\vb{T}$ as the basis for our scoring function in both proposals ranking and optimization step. 
+The output of our MC-FCN is a $w\times h \times 5$ probability array $\vb{T}$, where $w$ and $h$ stand for the width and length of the input image. Each of the 5 slices can be viewd as a probability map for the corresponding surface label, as shown in Fig.~\ref{fig:fcn-multi-channel}. We utilize the probability array $\vb{T}$ as the basis for our scoring function in both proposals ranking and optimization step. 
 
 \comments{Some visualized results compared with FCN without geometric hint as additional input are shown in Fig.~\ref{fig:fcn-comparison}.}
 
