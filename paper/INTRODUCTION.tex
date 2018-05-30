@@ -7,7 +7,7 @@ The main purpose of room layout estimation is to extract semantic boundaries amo
 In recent years, massive researches have been carried out on room layout estimation. Traditional methods usually follow a proposing-ranking framework \cite{hedau2009recovering,wang2013discriminative,gupta2010estimating,hedau2010thinking}. Typically, they first generate numbers of proposals through vanishing point detection and ray sampling. Then, a ranking step using hand-crafted rules is adopted to select the best hypothesis. Recent methods built on FCNs \cite{long2015fully} or encoder-decoder networks achieve impressive performance \cite{mallya2015learning,ren2016coarse,zhang2017learning,dasgupta2016delay,LeeRoomNet17,zhao2017physics}. 
 Specifically, Mallya et al.~\cite{mallya2015learning} presented an FCN for learning informative edge maps from images;  then the edge maps are integrated into the conventional framework as additional features. 
 %
-Dasgupta et al.~\cite{dasgupta2016delay} used an FCN to learn semantic surface labels including \{Left wall, Front wall, Right wall, Ceiling, Ground\} for each pixel. \mdf{They obtained a segmentation based on heat maps that are generated from the FCN}, and further refined it with geometric projection constraints.
+Dasgupta et al.~\cite{dasgupta2016delay} used an FCN to learn semantic surface labels including \{Left wall, Front wall, Right wall, Ceiling, Ground\} for each pixel. They obtained a segmentation based on heat maps that are generated from the FCN, and further refined it with geometric projection constraints.
 % 
 In a subsequent technique~\cite{ren2016coarse}, Ren et al. adopted a multi-task fully convolutional neural network to jointly predict the surface labels and boundaries. 
 %
@@ -20,7 +20,7 @@ Zhao et al. \cite{zhao2017physics} introduced a semantic transfer FCN to extract
 
 Different from previous FCN based methods, we propose to improve the performance of room layout estimation from another perspective. 
 Inspired by the work on RGBD semantic segmentation \cite{gupta2014learning,couprie2013indoor,li2017semantics,pagnutti2017segmentation,qi20173d}, we consider global geometric information as important as textures in room layout estimation. 
-To implicitly employ the geometric hint, depths and normals are estimated from the input RGB image and fused into a multi-channel FCN. We use the same layout formulation defined in \cite{dasgupta2016delay}, and combine their optimization step with a proposing-ranking framework to attain precise layouts. 
+To implicitly employ the geometric hints, depths and normals are estimated from the input RGB image and fused into a multi-channel FCN. We use the same layout formulation defined in \cite{dasgupta2016delay}, and combine their optimization step with a proposing-ranking framework to attain precise layouts. 
 Experimental results show that our method is robust and effective for layout estimation even facing clutters and occlusions.
  
 
