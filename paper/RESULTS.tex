@@ -1,11 +1,11 @@
 \section{RESULTS}
 \label{sec:Res}
 
-We prove the validity of the geometric hints in semantic surface segmentation, and evaluate our method on two widely used datasets: LSUN dataset \cite{zhang2015large} and Hedau's dataset~\cite{hedau2009recovering}. 
+We prove the validity of the geometric hints in semantic surface segmentation, and evaluate our method on two widely used datasets: LSUN dataset \cite{zhang2015large} and Hedau dataset~\cite{hedau2009recovering}. 
 
-\subsection{Analysis of Geometric Hint}
+\subsection{Analysis of Geometric Hints}
 \label{sec:ablation}
-To explore the benefits of geometric hint for semantic surface segmentation, we train FCNs with or without geometric hints, respectively. 
+To explore the benefits of geometric hints for semantic surface segmentation, we train FCNs with or without geometric hints, respectively. 
 Their performance are evaluated on the LSUN validation set using pixel error of $\vb{\hat{L}}$, which can be seen in Table~\ref{table:ablation}. To make fair comparisons with \cite{ren2016coarse, dasgupta2016delay}, both of which are built on VGG16, we train an MC-FCN based on VGG16 too. For \cite{ren2016coarse}, we directly apply their trained model to generate $\vb{\hat{L}}$. And for \cite{dasgupta2016delay}, we train an FCN having the same architecture with \cite{dasgupta2016delay}. As revealed by Table~\ref{table:ablation}, with the help of geometric hints, our MC-FCN obtains lower pixel error of $\vb{\hat{L}}$. We further improve the performance by employing ResNet101~\cite{he2016deep} in our FCN. 
 Qualitative results are demonstrated in Fig.~\ref{fig:fcn-comparison}. 
 Fig.~\ref{fig:fcn-comparison} (a)-(e) show typical good examples. Intuitively, the traditional FCNs are sometimes confused by different surfaces and generate spurious regions due to occlusions and clutters. 
@@ -30,7 +30,7 @@ Our method with the geometric hints gets rid of these uncertainties, and attains
 		MC-FCN (ResNet101) & 11.45 \\
 		\hline
 	\end{tabular}
-	\caption{Pixel-wise errors of semantic surface segmentation by different FCNs. By utilizing geometric hints, our proposed MC-FCNs obtains more accurate segmentations. }	
+	\caption{Pixel-wise errors of semantic surface segmentation by different FCNs. By utilizing geometric hints, our proposed MC-FCNs obtain more accurate segmentations. }	
 	\label{table:ablation}
 \end{table}
 
@@ -110,7 +110,7 @@ Our method achieves impressive performance on this dataset.
 		Proposed MC-FCN & \textbf{6.07} \\
 		\bottomrule
 	\end{tabular}
-	\caption{Performance on the Hedau dataset. \comments{6.07 using the metric in \cite{LeeRoomNet17}, 7.90 using the metric in \cite{zhao2017physics}}}
+	\caption{Performance on the Hedau dataset~\cite{hedau2009recovering}. \comments{6.07 using the metric in \cite{LeeRoomNet17}, 7.90 using the metric in \cite{zhao2017physics}}}
 	\label{table:comparison-hedau}
 \end{table}
 
