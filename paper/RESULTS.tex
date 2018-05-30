@@ -1,16 +1,20 @@
 \section{RESULTS}
 \label{sec:Res}
 
-We prove the validity of the geometric hint in semantic surface segmentation and evaluate our method on two widely used dataset: LSUN dataset \cite{zhang2015large} and Hedau's dataset \cite{hedau2009recovering}. 
+We prove the validity of the geometric hints in semantic surface segmentation, and evaluate our method on two widely used datasets: LSUN dataset \cite{zhang2015large} and Hedau's dataset~\cite{hedau2009recovering}. 
 
 \subsection{Analysis of Geometric Hint}
 \label{sec:ablation}
-To explore the benefits of geometric hint for semantic surface segmentation, we train FCNs with or without geometric hint, respectively. Their performance are evaluated on LSUN validation set using pixel error of $\vb{\hat{L}}$, which can be seen in Table~\ref{table:ablation}. To make fair comparisons with \cite{ren2016coarse, dasgupta2016delay}, both of which are built on VGG16, we train an MC-FCN based on VGG16 too. For \cite{ren2016coarse}, we directly apply their trained model to generate $\vb{\hat{L}}$. And for \cite{dasgupta2016delay}, we train an FCN having the same architecture in \cite{dasgupta2016delay}. As revealed by Table~\ref{table:ablation}, with the help of geometric hint, our MC-FCN obtains lower pixel error of $\vb{\hat{L}}$. We further improve the performance by employing a ResNet101 \cite{he2016deep} based FCN. Qualitative results are demonstrated in Fig.~\ref{fig:fcn-comparison}. (a)-(e) show typical good examples. Intuitively, the traditional FCNs are sometimes confused by different surfaces and generate spurious regions due to occlusion and clutter. While the geometric hint can help to get rid of these uncertainties and attain more accurate semantic surface segmentation. (f) depicts a generally bad case that FCNs tend to be cheated by large truncated wall-like object surfaces, e.g., the bed looks like the floor. This may be the result of ignoring the semantics of the objects. (g) is an another kind of bad case led by clutter while our MC-FCN produces a relatively clearer result.  
+To explore the benefits of geometric hint for semantic surface segmentation, we train FCNs with or without geometric hints, respectively. 
+Their performance are evaluated on the LSUN validation set using pixel error of $\vb{\hat{L}}$, which can be seen in Table~\ref{table:ablation}. To make fair comparisons with \cite{ren2016coarse, dasgupta2016delay}, both of which are built on VGG16, we train an MC-FCN based on VGG16 too. For \cite{ren2016coarse}, we directly apply their trained model to generate $\vb{\hat{L}}$. And for \cite{dasgupta2016delay}, we train an FCN having the same architecture with \cite{dasgupta2016delay}. As revealed by Table~\ref{table:ablation}, with the help of geometric hints, our MC-FCN obtains lower pixel error of $\vb{\hat{L}}$. We further improve the performance by employing ResNet101~\cite{he2016deep} in our FCN. 
+Qualitative results are demonstrated in Fig.~\ref{fig:fcn-comparison}. 
+Fig.~\ref{fig:fcn-comparison} (a)-(e) show typical good examples. Intuitively, the traditional FCNs are sometimes confused by different surfaces and generate spurious regions due to occlusions and clutters. 
+Our method with the geometric hints gets rid of these uncertainties, and attains more accurate semantic surface segmentation. Fig.~\ref{fig:fcn-comparison} (f) depicts an imperfect result, where FCNs tend to be cheated by large truncated wall-like object surfaces, e.g., the bed looks like the floor. This may be the result of ignoring the semantics of the objects. Fig.~\ref{fig:fcn-comparison} (g) is an another challenging case due to clutters, while our MC-FCN produces a relatively clearer result.  
 
 \begin{figure}[!ht]
 	\centering 
 	\textsc{\includegraphics[width=8.5cm]{figure/compare1.png}}
-	\caption{Surface segmentation results using different methods. All the networks are built on the VGG16 architecture. Our MC-FCN with geometric hint generates more accurate segmentation, especially  for complex environments.}
+	\caption{Surface segmentation results using different methods. All the networks are built on the VGG16 architecture. Our MC-FCN with geometric hints generates more accurate segmentation, especially for complex environments.}
 	\label{fig:fcn-comparison}
 \end{figure}
 
@@ -26,17 +30,22 @@ To explore the benefits of geometric hint for semantic surface segmentation, we 
 		MC-FCN (ResNet101) & 11.45 \\
 		\hline
 	\end{tabular}
-	\caption{Pixel error of semantic surface segmentation by different FCNs. By utilizing geometric hint, our proposed MC-FCNs acquire more accurate segmentation. }	
+	\caption{Pixel-wise errors of semantic surface segmentation by different FCNs. By utilizing geometric hints, our proposed MC-FCNs obtains more accurate segmentations. }	
 	\label{table:ablation}
 \end{table}
 
-\subsection{LSUN Results}
+\subsection{Results on LSUN Dataset}
 \label{sec:LSUN}
-We train our multi-channel FCN on the relabeled LSUN dataset released by \cite{ren2016coarse}. The dataset consists of 4000 training, 394 validation, and 1000 testing images. We extract geometric hint from original images and resize all the images, depth and normal maps to $321\times321$ using bicubic interpolation. Then these three types of data are integrated to train the ResNet101-based multi-channel FCN. We evaluate our results using the official toolkit which provides two standard metrics: pixelwise error and corner error. The pixelwise error is computed by counting the percentage of pixels that are mismatched. The corner error is computed by calculating the Euclidean distance between predicted corners and corresponding ground truth corners.
+We train our multi-channel FCN on the relabeled LSUN dataset released by \cite{ren2016coarse}. The dataset consists of 4000 training images, 394 validation images, and 1000 testing images. 
+We extract geometric hints from original images and resize all the images, depth and normal maps to $321\times321$ using bicubic interpolation. 
+These three types of data are integrated to train the ResNet101-based multi-channel FCN. 
+We evaluate our results using the official toolkit which provides two standard metrics: pixel-wise error and corner error. The pixel-wise error is computed by counting the percentage of pixels that are mismatched. The corner error is computed by calculating the Euclidean distance between predicted corners and corresponding ground truth corners.
 
-We summarize the performance on LSUN test set in Table~\ref{table:comparison-lsun}. Qualitative results are displayed in Fig.~\ref{fig:qualitative}. Our approach outperforms conventional methods \cite{hedau2009recovering} and most neural network based methods  \cite{mallya2015learning,zhang2017learning,dasgupta2016delay,ren2016coarse,LeeRoomNet17} on both metrics. 
+We summarize the performance on the test set of LSUN in Table~\ref{table:comparison-lsun}. Qualitative results are displayed in Fig.~\ref{fig:qualitative}. Our approach outperforms traditional methods \cite{hedau2009recovering} and most neural network based methods~\cite{mallya2015learning,zhang2017learning,dasgupta2016delay,ren2016coarse,LeeRoomNet17} on both metrics. 
 %
-Besides, when training the FCN, Zhao et al.~\cite{zhao2017physics} formulate the room layout using boundaries among semantic surfaces, while we formulate the room layout using the five semantic surfaces as \cite{dasgupta2016delay} do. These two representation may have different application prospects in the future. For example, when a home robot wants to locate itself while moving, the semantic boundaries are not always available. Our method may also be an inspiration for other surface detection problems.
+Besides, when training the FCN, Zhao et al.~\cite{zhao2017physics} formulate the room layout using boundaries among semantic surfaces, while we formulate the room layout using the five semantic surfaces, as \cite{dasgupta2016delay} does. 
+These two representations may have different application prospects in the future. For example, when a home robot wants to locate itself while it moves, the semantic boundaries are not always available. 
+Our method may also be an inspiration for other surface detection problems.
 
 \comments{
 This kind of boundary representation has a intrinsic problem of unbalanced training data where most of the area is background. This may be the reason for the training problem, as claimed in \cite{zhao2017physics,mallya2015learning}. They both have to pretrain their model on an indoor scene dataset to make the training stable. While we formulate the room layout using the five semantic surfaces as \cite{dasgupta2016delay} do, our representation does not have this limitation. We pretrain our MC-FCN on both indoor scene dataset (SUNRGBD) and non-indoor scene dataset (PASCAL) separately. Both settings lead to stable training and competitive performance, as shown in \ref{table:comparison-lsun}. The model pretrained on SUNRGBD obtains a better result which should benefit from external indoor scene data in SUNRGBD. }
@@ -72,13 +81,17 @@ Which formulation is better for room layout estimation remains an open question,
 		Proposed MC-FCN & 4.98 & 6.91 \\
 		\bottomrule
 	\end{tabular}
-	\caption{Performance on the LSUN~\cite{zhang2015large} dataset}	
+	\caption{Performance on the LSUN dataset~\cite{zhang2015large}.}	
 	\label{table:comparison-lsun}
 \end{table}
 
-\subsection{Hedau Results}
+\subsection{Results on Hedau Dataset}
 \label{sec:Hedau}
-We also conduct experiments on Hedau's \cite{hedau2009recovering} dataset, which consists of 209 training images and 104 testing images. Since the semantic boundaries in the segmentation ground truth are thick and treated as a new category in this dataset, we perform boundary thinning to one pixel width by assigning them with the closest segmentation label as \cite{LeeRoomNet17} do. We directly evaluate our method on Hedau's test set using the model trained on LSUN. Pixel error is adopted as metric. As shown by Table~\ref{table:comparison-hedau}, our performance is better than \cite{mallya2015learning,zhang2017learning,ren2016coarse}, all of which have trained their model on Hedau's training set. This indicates that our model has a good generalization ability. We achieve impressive performance on this dataset.
+We also conduct experiments on the Hedau dataset \cite{hedau2009recovering}, which consists of 209 training images and 104 testing images. 
+Since the semantic boundaries in the ground truth are thick and treated as a new category in this dataset, we perform boundary thinning to single pixel width by assigning them with the closest segmentation label, same as \cite{LeeRoomNet17}. We directly evaluate our method on the test set of Hedau  dataset using the model trained on LSUN. 
+Pixel-wise error is adopted as the metric. 
+As shown by Table~\ref{table:comparison-hedau}, our performance is better than \cite{mallya2015learning,zhang2017learning,ren2016coarse}, all of which are trained on the Hedau's training set. This indicates that our model has a good generalization ability. 
+Our method achieves impressive performance on this dataset.
 
 \begin{table}
 	\centering 
@@ -94,10 +107,10 @@ We also conduct experiments on Hedau's \cite{hedau2009recovering} dataset, which
 		Lee et al.~\cite{LeeRoomNet17} & 8.36 \\
 		Zhao et al.~\cite{zhao2017physics} & 6.60 \\
 		\midrule
-		Proposed MC-FCN & 6.07 \\
+		Proposed MC-FCN & \textbf{6.07} \\
 		\bottomrule
 	\end{tabular}
-	\caption{Performance on the Hedau's~\cite{hedau2009recovering} dataset \comments{6.07 using the metric in \cite{LeeRoomNet17}, 7.90 using the metric in \cite{zhao2017physics}}}
+	\caption{Performance on the Hedau dataset. \comments{6.07 using the metric in \cite{LeeRoomNet17}, 7.90 using the metric in \cite{zhao2017physics}}}
 	\label{table:comparison-hedau}
 \end{table}
 

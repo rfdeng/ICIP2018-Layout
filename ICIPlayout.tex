@@ -11,9 +11,9 @@
 \usepackage{booktabs}
 
 
-\newcommand{\cxj}[1]{\textcolor[rgb]{1.00,0.00,0.00}{(cxj: #1)}}
+%\newcommand{\cxj}[1]{\textcolor[rgb]{1.00,0.00,0.00}{(cxj: #1)}}
 \newcommand{\mdf}[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
-\newcommand{\drf}[1]{\textcolor[rgb]{0.00,0.50,1.00}{(drf: #1)}}
+%\newcommand{\drf}[1]{\textcolor[rgb]{0.00,0.50,1.00}{(drf: #1)}}
 \newcommand{\vb}[1]{\mathbf{#1}}
 \newcommand{\comments}[1]{}
 % Example definitions.
@@ -23,7 +23,7 @@
 
 % Title.
 % ------
-\title{Robust Room Layout Estimation from a Single Image \\ with Geometric Hint}
+\title{Robust Room Layout Estimation from a Single Image \\ with Geometric Hints}
 %
 % Single address.
 % ---------------
@@ -56,11 +56,12 @@
 %
 \begin{abstract}
 %In this paper, we consider the problem of room layout estimation from a single RGB image. Previous methods based on fully convolutional neural networks (FCNs) suffer from heavy occlusion and clutter in indoor scenes. 
-Estimation of room layout suffers from heavy occlusion and clutter in indoor scenes.
+Estimation of room layout suffers from heavy occlusions and clutters in indoor scenes.
 %
 In this paper, we propose a deep network that combines textures and geometric hints to predict the surface layout from a single image.
 %
-Our method consists of three steps: (1) depth and normals are extracted from the input RGB image; (2) a multi-channel FCN (MC-FCN) is presented to integrate these geometric hints for semantic surface segmentation; (3) an optimization framework is adopted to refine the layout estimation. The proposed method has proven to be more robust to complex environmental factors. We achieve competitive performance on two commonly used benchmark datasets. 
+Our method consists of three steps. First, depths and normals are extracted from the input RGB image. Secondly, a multi-channel FCN (MC-FCN) is presented to integrate these geometric hints for semantic surface segmentation. Thirdly, an optimization framework is adopted to refine the layout estimation. 
+The results on two commonly used benchmark datasets demonstrate the robustness of our method on complex scenes. 
 	
 \end{abstract}
 %
@@ -78,50 +79,13 @@ Layout estimation, scene understanding, geometric hint
 % uncomment the preceding line ``\centerline...'' and replace ``imageX.ps''
 % with a suitable PostScript file name.
 % -------------------------------------------------------------------------
-\comments{
-\begin{figure}[htb]
-
-\begin{minipage}[b]{1.0\linewidth}
-  \centering
-  \centerline{\includegraphics[width=8.5cm]{figure/image1}}
-%  \vspace{2.0cm}
-  \centerline{(a) Result 1}\medskip
-\end{minipage}
-%
-\begin{minipage}[b]{.48\linewidth}
-  \centering
-  \centerline{\includegraphics[width=4.0cm]{figure/image3}}
-%  \vspace{1.5cm}
-  \centerline{(b) Results 3}\medskip
-\end{minipage}
-\hfill
-\begin{minipage}[b]{0.48\linewidth}
-  \centering
-  \centerline{\includegraphics[width=4.0cm]{figure/image4}}
-%  \vspace{1.5cm}
-  \centerline{(c) Result 4}\medskip
-\end{minipage}
-%
-\caption{Example of placing a figure with experimental results.}
-\label{fig:res}
-%
-\end{figure}
-}
+ 
 
 % To start a new column (but not a new page) and help balance the last-page
 % column length use \vfill\pagebreak.
 % -------------------------------------------------------------------------
 %\vfill
-%\pagebreak
-\comments{
-\section{COPYRIGHT FORMS}
-\label{sec:copyright}
-
-You must include your fully completed, signed IEEE copyright release form when
-form when you submit your paper. We {\bf must} have this form before your paper
-can be published in the proceedings.
-}
-
+ 
 % References should be produced using the bibtex program from suitable
 % BiBTeX files (here: strings, refs, manuals). The IEEEbib.bst bibliography
 % style file from IEEE produces unsorted bibliography list.
