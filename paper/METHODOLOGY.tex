@@ -6,11 +6,11 @@
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=8.5cm]{figure/ppline.png}
-	\caption{The pipeline of our layout estimation algorithm. First, we adopt a multi-scale CNN architecture~\cite{eigen2015predicting} to extract the geometric information, including depths and normals, from the RGB image. Then, we combine all the above-mentioned information into a multi-channel FCN, which helps to accurately estimate the layout. Finally, an optimization framework is employed to obtain the final layout by optimizing the best proposals generated from the input RGB image.}
+	\caption{The pipeline of our layout estimation algorithm. First, we adopt a multi-scale CNN architecture~\cite{eigen2015predicting} to extract the geometric information, including depth and normals, from the RGB image. Then, we combine all the above-mentioned information into a multi-channel FCN, which helps to accurately estimate the layout. Finally, an optimization framework is employed to obtain the final layout by optimizing the best proposals generated from the input RGB image.}
 	\label{fig:pipeline}
 \end{figure}
 
-Under the Manhattan world assumption \cite{coughlan1999manhattan}, a room layout can be represented as a cube, of which at most five surfaces \{Left, Front, Right, Ceiling, Ground\} are visible in an image. 
+Under the Manhattan world assumption \cite{coughlan1999manhattan}, a room layout can be represented as a cube, of which most five surfaces \{Left, Front, Right, Ceiling, Ground\} are visible in an image. 
 %
 Given an RGB image $\vb{I}$ with an arbitrary size, our algorithm generates a room layout $\vb{L}$ that has a surface label for each pixel $L_{ij}$ in such 5-class set. Fig.~\ref{fig:pipeline} shows the algorithm pipeline. 
 %%step 1
@@ -23,7 +23,7 @@ While we can easily get a layout estimation $\vb{\hat{L}}$ by choosing the label
 To handle these problems and obtain clearer layout estimation with geometric constraints, an optimization step is adopted, as described in Sec.~\ref{sec:optimization}.  
  
 
-\subsection{Geometric Hints Extraction}
+\subsection{Geometric Hint Extraction}
 \label{sec:depth_normal}
 
 We use the multi-scale convolutional network proposed in \cite{eigen2015predicting} to estimate the depth and normal maps from RGB images.
@@ -40,7 +40,7 @@ However, the model seems to generalize well in our case.
 	\label{fig:depthandnormal}
 \end{figure}
 
-We notice in practice that the depths and normals estimated from RGB images are not precise in local details. And the output resolution of the depth and normal maps is limited to half of the input. However, the valuable 3D information they provided is much helpful for high-level structure estimation, especially in messy scenes.  
+We notice in practice that the depth and normals estimated from RGB images are not precise in local details. And the output resolution of the depth and normal maps is limited to half of the input. However, the valuable 3D information they provided is much helpful for high-level structure estimation, especially in messy scenes.  
 %
 As analyzed in Sec.~\ref{sec:ablation}, depths and normals can serve as hints that tend to merge big planes together under the interference factors, such as clutters and occlusions. 
 %
@@ -65,7 +65,7 @@ A multi-channel FCN (MC-FCN) is adopted to incorporate geometric hints that are 
 \begin{figure}
 	\centering
 	\includegraphics[width=8.5cm]{figure/MC-FCN.png}
-	\caption{The multi-channel network architecture build on \cite{chen2016deeplab}. We clip the Deeplab-ResNet101 by removing the multi-scale related layers. Then, we combine the RGB image, depths and normals together as input to the network for semantic surface learning. }
+	\caption{The multi-channel network architecture build on \cite{chen2016deeplab}. We clip the Deeplab-ResNet101 by removing the multi-scale related layers. Then, we combine the RGB image, depth and normals together as input to the network for semantic surface learning. }
 	\label{fig:fcn-multi-channel}
 \end{figure}
 
@@ -75,7 +75,7 @@ We build the MC-FCN based on the DeepLab-ResNet101~\cite{chen2016deeplab}.
 %
 While we consider the room layout as a high-level semantic information that relies more on global structure, we modify the network by removing the multi-scale related layers. 
 As illustrated in Fig.~\ref{fig:fcn-multi-channel}, the estimated depth and normal maps are treated as additional channels associated with the input RGB image. 
-We simply concatenate different types of data to a seven-channels input (3 channels from RGB, 1 channel from depths and 3 channels from normals), and feed them into the network. 
+We simply concatenate different types of data to a seven-channels input (3 channels from RGB, 1 channel from depth and 3 channels from normals), and feed them into the network. 
 Atrous convolution is adopted in our 5-way classifier layer. 
 
 \vspace{0.1cm}
